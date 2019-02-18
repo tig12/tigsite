@@ -104,13 +104,15 @@ class jth_rscandir{
             $keep = false;
             $excluded = false;
             for($i=0; $i < count($params['include']); $i++){
-                if(fnmatch($params['include'][$i], $basename)){
+                //if(fnmatch($params['include'][$i], $basename)){
+                if(fnmatch($params['include'][$i], $current)){
                     $keep = true;
                     break;
                 }
             }
             for($i=0; $i < count($params['exclude']); $i++){
-                if(fnmatch($params['exclude'][$i], $basename)){
+                //if(fnmatch($params['exclude'][$i], $basename)){
+                if(fnmatch($params['exclude'][$i], $current)){
                     $keep = false;
                     $excluded = true;
                     break;

@@ -1,5 +1,9 @@
 location: /home/thierry/dev/tig12/tig12.net/web
 exclude:
+  - '*/z.*'
   - .git
+  - .gitignore
   - static
-  - x-templates
+  - maths/categories/milewski
+  - maths/grothenuls
+  

@@ -1,0 +1,11 @@
+
+#
+# Executed only once
+#
+commandClass: insertHtml
+before: '</body>'
+insert-string: |
+  <footer class="footer">
+  </footer>
+exclude:
+  - index.html

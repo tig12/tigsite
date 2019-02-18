@@ -1,0 +1,8 @@
+
+
+commandClass: replaceHtml
+before: '<footer class="footer">'
+after: '</footer>'
+replacement-file: static/html/footer.html
+#exclude:
+#  - index.html

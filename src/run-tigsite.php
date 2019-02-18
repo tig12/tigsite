@@ -66,11 +66,19 @@ $config = [];
 $config['site'] = jthYAML::parse($siteConfigFile);
 $config['command'] = jthYAML::parse($commandFile);
 
-echo "\n<pre>"; print_r($config); echo "</pre>\n";
+if(!isset($config['command']['commandClass'])){
+    echo "Missing entry 'commandClass' in $commandFile\n";
+    exit;
+}
 
-exit;
+if(!class_exists($config['command']['commandClass'])){
+    echo "Entry 'commandClass' does not correspond to an existing command class in $commandFile\n";
+    exit;
+}
 
+//echo "\n<pre>"; print_r($config); echo "</pre>\n"; exit;
 try{
+    $config['command']['commandClass']:: execute($config);
 }
 catch(Exception $e){
     echo 'Exception : ' . $e->getMessage() . "\n";
