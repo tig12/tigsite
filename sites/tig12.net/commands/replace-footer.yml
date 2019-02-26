@@ -1,7 +1,7 @@
 
 
 commandClass: replaceHtml
-before: '<footer class="footer">'
+before: '<footer>'
 after: '</footer>'
 replacement-file: static/html/footer.html
 #exclude:

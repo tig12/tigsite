@@ -1,0 +1,11 @@
+
+#
+# Executed only once
+#
+commandClass: insertHtml
+after: '</article>'
+insert-string: |
+  
+  </div><!-- end class="main" -->
+exclude:
+  - index.html

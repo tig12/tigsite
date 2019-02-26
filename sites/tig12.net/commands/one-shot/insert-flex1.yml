@@ -1,0 +1,13 @@
+
+#
+# Executed only once
+#
+commandClass: insertHtml
+after: '<body>'
+insert-string: |
+  
+  <div class="container">
+  
+  <div class="main">
+exclude:
+  - index.html

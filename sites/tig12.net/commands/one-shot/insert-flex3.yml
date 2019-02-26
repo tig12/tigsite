@@ -1,0 +1,17 @@
+
+#
+# Executed only once
+#
+commandClass: insertHtml
+before: '<footer>'
+insert-string: |
+  
+  <!-- ************************************* -->
+  <aside class="right">
+  </aside>
+  
+  </div><!-- end class="container" -->
+  
+  <!-- ************************************* -->
+exclude:
+  - index.html
