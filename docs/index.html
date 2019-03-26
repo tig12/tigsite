@@ -138,6 +138,23 @@ See code documentation in <code>src/commands/insertHtml.php</code>.
 <h3>replaceHtml</h3>
 See code documentation in <code>src/commands/replaceHtml.php</code>.
 
+
+<!-- ********************************************************************************* -->
+<h2>Page configuration</h2>
+Each html page of the site may contain its own configuration, used by some commands.
+<br>Page configuration is a piece of yaml included in a html comment, typically located in the <code>&lt;head></code> part of the page
+<br>This yaml must contain a directive <code>tigsite</code> which contains the configuration directives.
+<br>
+<br>Example :
+<pre>
+&lt;head>
+    &lt;!-- 
+    tigsite:
+        sidebar-right: genealogy/sidebar-genealogy.fr.html
+    -->
+&lt;/head>
+</pre>
+
 </article>
 
 </body>

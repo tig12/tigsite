@@ -15,7 +15,7 @@ class expandVariables{
     
     // ******************************************************
     /**
-        @param  $subject    ThePiece of html that may contain strings to expanded
+        @param  $subject    The piece of html that may contain strings to expanded
         @param  $params    Depend on the strings that need to be expanded
                                See particular functions to have the list of required parameters.
     **/
@@ -56,7 +56,8 @@ class expandVariables{
         $relative = str_replace($params['root-dir'], '', $params['current-file']);
         $parts = explode('/', $relative);
         $n = count($parts) - 2; // -2 because -1 for first / and -1 for last part of the path
-        return str_repeat('../', $n);
+        $tmp = str_repeat('../', $n);
+        return substr($tmp, 0, -1); // remove last '/'
     }
     
 }// end class

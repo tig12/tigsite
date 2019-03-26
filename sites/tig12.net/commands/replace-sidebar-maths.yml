@@ -1,8 +1,0 @@
-
-
-commandClass: replaceHtml
-before: '<aside class="right">'
-after: '</aside>'
-replacement-file: maths/sidebar-maths.html
-#exclude:
-#  - index.html

@@ -76,7 +76,6 @@ if(!class_exists($config['command']['commandClass'])){
     exit;
 }
 
-//echo "\n<pre>"; print_r($config); echo "</pre>\n"; exit;
 try{
     $config['command']['commandClass']:: execute($config);
 }
