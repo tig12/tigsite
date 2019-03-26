@@ -1,1 +1,7 @@
 Tools to manage tig12.net
+
+Usage : 
+cd src
+php run-tigsite.php
+
+Follow the instructions of the error message

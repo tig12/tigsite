@@ -1,9 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>tigsite</title>
+    <meta name="description" content="A tool to assist the development of a static site">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="copyright" href="http://www.gnu.org/copyleft/gpl.html"/>
+    <link rel="stylesheet" href="static/style.css" type="text/css">
+</head>
+
+<body>
+
+<header>
+<h1>tigsite</h1>
+<div class="intro">
+This tool assists the development of a web site containing static pages.
+<br>It was developed to help writing <a href="https://tig12.net">tig12.net</a>
+</div>
+</header>
+
+<article>
+
+<!-- ********************************************************************************* -->
+<h2>Overview</h2>
+
+The tool is run on the command line :
+<pre>
+cd src/
+php run-tigsite.php &lt;site> &lt;command>
+</pre>
+
+<code>&lt;site></code> must be the name of a sub-directory of <code>sites/</code>.
+<br><code>&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
+<br>
+<br>For example, 
+<pre>php run-tigsite.php tig12.net replace-footer</pre>
+
+corresponds to this hierarchy :
+
+<pre>
+sites/
+└── tig12.net
+    ├── commands
+    │   └── replace-footer.yml
+    └── config.yml
+</pre>
+
+<ul>
+    <li>The command name specified does not include the "<code>.yml</code>" extension.</li>
+    <li>
+        Commands can be organized in subdirectories.
+        <br>For example,
+        <pre>php run-tigsite.php tig12.net asides/replace-footer</pre>
+        corresponds to 
+<pre>
+sites/
+└── tig12.net
+    ├── commands
+    │   └── asides
+    │        └── replace-footer.yml
+    └── config.yml
+</pre>
+    </li>
+</ul>
 
 
 
+<!-- ********************************************************************************* -->
+<h2>Site directories</h2>
+Each site managed by this tool must correspond to a sub-directory of <code>sites/</code> and have this structure :
+<pre>
+sites/
+└── mysite.org
+    ├── commands/
+    └── config.yml
+</pre>
 
-<h2>Site config.yml</h2>
-- 'location' : absolute path to directory containing the files to process.
-- 'exclude' (optional) : array of strings containing regular expressions
-    of relative paths to files to exclude from processing.
-    Defaults to an empty array
+<!-- ************************************* -->
+<h3>config.yml</h3>
+
+Configuration file containing iniformation used by all commands related to the site
+<br>
+<br>Example :
+<pre>
+location: /pat/to/the/site/web
+exclude:
+  - .git
+  - .gitignore
+  - static
+</pre>
+
+<table class="wikitable">
+    <tr><th>Directive</th><th></th><th>Description</th></tr>
+    <tr>
+        <td>location</td>
+        <td>Required</td>
+        <td>Absolute path to the root directory of the site.</td>
+    </tr>
+    <tr>
+        <td>exclude</td>
+        <td>Optional</td>
+        <td>
+            Array of strings containing regular expressions of relative paths to files to exclude from processing.
+            <br>Defaults to an empty array        
+        </td>
+    </tr>
+</table>
+
+
+<!-- ********************************************************************************* -->
+<h2>Commands</h2>
+
+The yaml files located in <code>sites/&lt;my-site>/commands/</code> are used to specify :
+<br>- which command is used
+<br>- the parameters passed to the command.
+<br>
+<br>The available commands are located in <code>src/commands</code>.
+<br>All commands implement the interface <code>Command</code>, which define a unique method :
+<br><code>public static function execute($params)</code>
+
+<br>
+<br>Example of a command file :
+<pre>
+commandClass: replaceHtml
+before: '&lt;footer>'
+after: '&lt;/footer>'
+</pre>
+
+In a command file, the unique required directive is <code><b>commandClass</b></code>
+<br>The other directives depend on the command ; they are passed as parameters to the command.
+
+<!-- ************************************* -->
+<h3>insertHtml</h3>
+See code documentation in <code>src/commands/insertHtml.php</code>.
+
+<!-- ************************************* -->
+<h3>replaceHtml</h3>
+See code documentation in <code>src/commands/replaceHtml.php</code>.
+
+</article>
+
+</body>
+</html>
+
+<!-- ************************************* -->
+<!-- ********************************************************************************* -->

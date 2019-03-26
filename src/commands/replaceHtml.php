@@ -21,6 +21,7 @@ class replaceHtml implements Command {
                     the new html code to insert between 'before' and 'after'.
                 - 'replacement-string' : string containing the new html code to insert between 'before' and 'after'.
                 NOTE : 'command' must contain 'replacement-file' or 'replacement-string' but not both.
+                - 'exclude' : array of files that must not be concerned by replacement.
         @throws Exception in case of bad parameter
         
         @todo Add parameters "config-file" and "command-file" (only useful for messages in parameter checking)
@@ -81,13 +82,10 @@ class replaceHtml implements Command {
             echo "processing {$files[$i]}\n";
             $subject = file_get_contents($files[$i]);
             $replace2 = expandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $files[$i]]);
-//echo "$replace2\n";
-//continue;
             $new = preg_replace($pattern, $replace2, $subject, -1, $count);
             if($count == 0){
                 continue;
             }
-//echo "$new\n"; exit;
             file_put_contents($files[$i], $new);
         }
         
