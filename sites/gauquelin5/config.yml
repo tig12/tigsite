@@ -1,0 +1,8 @@
+location: /home/thierry/dev/astrostats/gauquelin5/docs
+exclude:
+  - 'z.*'
+  - '*/z.*'
+  - .git
+  - .gitignore
+  - static
+  
