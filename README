@@ -1,7 +1,5 @@
-Tools to manage tig12.net
+Tools to manage the development of a static site.  
 
-Usage : 
-cd src
-php run-tigsite.php
+Documentation of this software is located in docs/index.html.  
 
-Follow the instructions of the error message
+Released under the GPL (General Public Licence), version 2 or later.
