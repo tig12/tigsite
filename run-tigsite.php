@@ -12,7 +12,9 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 
-require_once 'app/autoload.php';
+$ROOT_DIR = __DIR__;                      
+
+require_once $ROOT_DIR . DS . 'src' . DS . 'app' . DS . 'autoload.php';
 
 $USAGE = <<<USAGE
 Usage : 
@@ -36,9 +38,8 @@ if(count($argv) != 3){
 $siteName = $argv[1];
 $command = $argv[2];
 
-$ROOT = dirname(__DIR__);
 
-$siteDir = $ROOT . DS . 'sites' . DS . $siteName;
+$siteDir = $ROOT_DIR . DS . 'sites' . DS . $siteName;
 
 if(!is_dir($siteDir)){
     echo "Wrong site name : directory sites/$siteName does not exist\n";
