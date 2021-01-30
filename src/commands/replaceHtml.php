@@ -120,8 +120,6 @@ class replaceHtml implements Command {
                 $replace = $params['command']['before'] . $replace . $params['command']['after'];
             }
             $replace2 = expandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $file]);
-// echo "\n"; print_r($replace2); echo "\n";
-// continue;
             $new = preg_replace($pattern, $replace2, $subject, -1, $count);
             if($count == 0){
                 continue;

@@ -15,7 +15,7 @@
 <h1>tigsite</h1>
 <div class="intro">
 This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://tig12.net">tig12.net</a>
-<br>This tool could be called "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the code modifies the html pages.
+<br>This tool could be called an "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the code modifies the html pages.
 </div>
 </header>
 
@@ -79,9 +79,9 @@ sites/
 <!-- ************************************* -->
 <h3>config.yml</h3>
 
-Configuration file containing iniformation used by all commands related to the site
-<br>
-<br>Example :
+Configuration file containing information used by all commands related to the site.
+
+<br><br>Example :
 <pre>
 location: /path/to/the/site/web
 exclude:
@@ -112,7 +112,7 @@ exclude:
 <h2>Commands</h2>
 
 The yaml files located in <code>sites/&lt;my-site>/commands/</code> are used to specify :
-<br>- which command is used
+<br>- which command is used.
 <br>- the parameters passed to the command.
 <br>
 <br>The available commands are located in <code>src/commands</code>.
@@ -138,6 +138,9 @@ See code documentation in <code>src/commands/insertHtml.php</code>.
 <h3>replaceHtml</h3>
 See code documentation in <code>src/commands/replaceHtml.php</code>.
 
+<!-- 
+TODO document expanded variables {{path-to-root}}
+-->
 
 <!-- ********************************************************************************* -->
 <h2>Page configuration</h2>
@@ -159,6 +162,3 @@ Each html page of the site may contain its own configuration, used by some comma
 
 </body>
 </html>
-
-<!-- ************************************* -->
-<!-- ********************************************************************************* -->

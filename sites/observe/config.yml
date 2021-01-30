@@ -1,0 +1,7 @@
+location: /home/thierry/dev/astrostats/observe/docs
+exclude:
+  - 'z.*'
+  - '*/z.*'
+  - static
+  - .git
+  - .gitignore
