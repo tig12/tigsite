@@ -11,11 +11,11 @@
 
 <body>
 
-<header>
-<h1>tigsite</h1>
+    <header>
+<h1>tigsite (php)</h1>
 <div class="intro">
-This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://tig12.net">tig12.net</a>
-<br>This tool could be called an "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the code modifies the html pages.
+This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://mysite1.org">mysite1.org</a>
+<br>This tool could be called an "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the php code modifies the html pages.
 </div>
 </header>
 
@@ -24,26 +24,36 @@ This tool assists the development of a web site containing static pages. It was 
 <!-- ********************************************************************************* -->
 <h2>Overview</h2>
 
-The tool is run on the command line :
 <pre>
-cd src/
-php run-tigsite.php &lt;site> &lt;command>
+tigsite
+    ├── docs
+    ├── sites
+    ├──  src
+    └── run-tigsite.php
 </pre>
 
-<code>&lt;site></code> must be the name of a sub-directory of <code>sites/</code>.
-<br><code>&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
+
+The tool is run on the command line :
+<pre>
+cd tigsite/
+<b class="big2">php run-tigsite.php &lt;site> &lt;command></b>
+</pre>
+
+<code class="bold">&lt;site></code> must be the name of a sub-directory of <code>sites/</code>.
+
+<code class="bold">&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
 <br>
 <br>For example, 
-<pre>php run-tigsite.php tig12.net replace-footer</pre>
+<pre>php run-tigsite.php mysite1.org replace-footer</pre>
 
 corresponds to this hierarchy :
 
 <pre>
 sites/
-└── tig12.net
-    ├── commands
-    │   └── replace-footer.yml
-    └── config.yml
+    └── mysite1.org
+        ├── commands
+        │   └── replace-footer.yml
+        └── config.yml
 </pre>
 
 <ul>
@@ -51,11 +61,11 @@ sites/
     <li>
         Commands can be organized in subdirectories.
         <br>For example,
-        <pre>php run-tigsite.php tig12.net asides/replace-footer</pre>
+        <pre>php run-tigsite.php mysite1.org asides/replace-footer</pre>
         corresponds to 
 <pre>
 sites/
-└── tig12.net
+└── mysite1.org
     ├── commands
     │   └── asides
     │        └── replace-footer.yml

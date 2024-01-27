@@ -1,4 +1,4 @@
-location: /home/thierry/dev/astrostats/g5/docs
+location: /home/thierry/dev/jobs/cnam/git-repos/public
 exclude:
   - 'z.*'
   - '*/z.*'

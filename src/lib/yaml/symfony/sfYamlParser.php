@@ -418,7 +418,7 @@ class sfYamlParser
     {
       $modifiers = isset($matches['modifiers']) ? $matches['modifiers'] : '';
 
-      return $this->parseFoldedScalar($matches['separator'], preg_replace('#\d+#', '', $modifiers), intval(abs($modifiers)));
+      return $this->parseFoldedScalar($matches['separator'], preg_replace('#\d+#', '', $modifiers), abs(intval($modifiers)));
     }
     else
     {

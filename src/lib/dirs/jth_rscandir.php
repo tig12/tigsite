@@ -12,7 +12,7 @@
             default = array('*')
         - 'exclude' : string or array of simplified regular expressions
             default = []
-            "simplified regular expressions" means regex as understood by PHP fnmatch function
+            "simplified regular expressions" means regex as understood by PHP fnmatch() function
             If include is present and not exclude, returns only the included files
             If exclude is present and not include, returns everything but the excluded files
             If both exclude and include are present, returns the files that are included and not excluded

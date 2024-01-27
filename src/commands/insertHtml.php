@@ -16,7 +16,9 @@ class insertHtml implements Command {
         @param  $params Associative array that MUST contain the following keys :
             - 'site' (required) : associative array ; see format in docs/
             - 'command' (required) : associative aray with the following keys :
-                - 'before' or 'after' : html piece of code to mark the place where the new html must be inserted.
+            - 'before' or 'after' : html piece of code in existing pages
+               to mark the place where the new html must be inserted.
+            - 'insert-file' or 'insert-string' : html content to insert
         @throws Exception in case of bad parameter
         
         @todo Add parameters "config-file" and "command-file" (only useful for messages in parameter checking)
