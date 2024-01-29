@@ -14,7 +14,7 @@
     <header>
 <h1>tigsite (php)</h1>
 <div class="intro">
-This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://mysite1.org">mysite1.org</a>
+This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://tig12.net">tig12.net</a>
 <br>This tool could be called an "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the php code modifies the html pages.
 </div>
 </header>
@@ -44,7 +44,7 @@ cd tigsite/
 <code class="bold">&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
 <br>
 <br>For example, 
-<pre>php run-tigsite.php mysite1.org replace-footer</pre>
+<pre class="bold">php run-tigsite.php mysite1.org replace-footer</pre>
 
 corresponds to this hierarchy :
 
@@ -61,7 +61,7 @@ sites/
     <li>
         Commands can be organized in subdirectories.
         <br>For example,
-        <pre>php run-tigsite.php mysite1.org asides/replace-footer</pre>
+        <pre class="bold">php run-tigsite.php mysite1.org asides/replace-footer</pre>
         corresponds to 
 <pre>
 sites/
@@ -92,7 +92,7 @@ sites/
 Configuration file containing information used by all commands related to the site.
 
 <br><br>Example :
-<pre>
+<pre class="bold">
 location: /path/to/the/site/web
 exclude:
   - .git
@@ -131,7 +131,7 @@ The yaml files located in <code>sites/&lt;my-site>/commands/</code> are used to 
 
 <br>
 <br>Example of a command file :
-<pre>
+<pre class="bold">
 commandClass: replaceHtml
 before: '&lt;footer>'
 after: '&lt;/footer>'
@@ -159,7 +159,7 @@ Each html page of the site may contain its own configuration, used by some comma
 <br>This yaml must contain a directive <code>tigsite</code> which contains the configuration directives.
 <br>
 <br>Example :
-<pre>
+<pre class="bold">
 &lt;head>
     &lt;!-- 
     tigsite:
