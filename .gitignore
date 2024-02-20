@@ -1,4 +1,9 @@
 
+# by default, don't version sites/
+# but version sites/example
+sites/*
+!sites/example
+
 z.*
 *~
 y.build

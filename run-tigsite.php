@@ -2,7 +2,7 @@
 /********************************************************************************
     CLI (command line interface) to use tigsite
     
-    usage : php run-gauquelin5.php
+    usage : php run-tigsite.php
             and follow the instructions
     
     @license    GPL
