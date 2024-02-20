@@ -1,8 +1,0 @@
-location: /home/thierry/dev/maths/categories/catig12
-exclude:
-  - 'z.*'
-  - '*/z.*'
-  - .git
-  - .gitignore
-  - static
-  

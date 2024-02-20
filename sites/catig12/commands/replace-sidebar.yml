@@ -1,8 +1,0 @@
-#
-# Command to replace the right sidebar
-# Uses the page configuration 'sidebar-right' directive
-#
-commandClass: replaceHtml
-before: '<aside class="left">'
-after: '</aside>'
-replacement-file: static/html/sidebar.html

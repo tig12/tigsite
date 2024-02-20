@@ -1,8 +1,0 @@
-location: /home/thierry/dev/astrostats/g5/docs
-exclude:
-  - 'z.*'
-  - '*/z.*'
-  - .git
-  - .gitignore
-  - static
-  

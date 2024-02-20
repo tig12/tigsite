@@ -1,8 +1,0 @@
-location: /home/thierry/dev/jobs/cnam/git-repos/public
-exclude:
-  - 'z.*'
-  - '*/z.*'
-  - .git
-  - .gitignore
-  - static
-  
