@@ -15,7 +15,8 @@
 <h1>tigsite (php)</h1>
 <div class="intro">
 This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://tig12.net">tig12.net</a>
-<br>This tool could be called an "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the php code modifies the html pages.
+<br>Tigsite could be called an "anti-framework" : instead of storing the information in a database and write code to generate web pages, the information is directly stored in html pages, and the php code modifies the html pages.
+<br>Mainly used to handle navigation or modifications on all pages.
 </div>
 </header>
 
@@ -40,17 +41,16 @@ cd tigsite/
 </pre>
 
 <code class="bold">&lt;site></code> must be the name of a sub-directory of <code>sites/</code>.
-
-<code class="bold">&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
+<br><code class="bold">&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
 <br>
 <br>For example, 
-<pre class="bold">php run-tigsite.php mysite1.org replace-footer</pre>
+<pre class="bold">php run-tigsite.php site1 replace-footer</pre>
 
 corresponds to this hierarchy :
 
 <pre>
 sites/
-    └── mysite1.org
+    └── site1
         ├── commands
         │   └── replace-footer.yml
         └── config.yml
@@ -61,11 +61,11 @@ sites/
     <li>
         Commands can be organized in subdirectories.
         <br>For example,
-        <pre class="bold">php run-tigsite.php mysite1.org asides/replace-footer</pre>
+        <pre class="bold">php run-tigsite.php site1 asides/replace-footer</pre>
         corresponds to 
 <pre>
 sites/
-└── mysite1.org
+└── site1
     ├── commands
     │   └── asides
     │        └── replace-footer.yml
