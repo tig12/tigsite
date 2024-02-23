@@ -60,13 +60,6 @@ class jthAutoload_nonamespace{
         @todo   should have an exclude property to avoid hacking the code when specific dirs must be excluded
     **/
     private static function load_dir($dir){
-        // dirty hacks to avoid loading some classes, locally handled by an other autoloader
-        if(strpos($dir, 'phpgedcom/library') !== false){
-            return;
-        }
-        if(strpos($dir, 'twig/Twig') !== false){
-            return;
-        }
         global $res;
         if($handler = opendir($dir)) {
             while(($sub = readdir($handler)) !== false) {
