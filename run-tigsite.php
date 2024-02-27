@@ -64,8 +64,8 @@ if(!is_file($commandFile)){
 // run
 //
 $config = [];
-$config['site'] = jthYAML::parse($siteConfigFile);
-$config['command'] = jthYAML::parse($commandFile);
+$config['site'] = yaml_parse_file($siteConfigFile);
+$config['command'] = yaml_parse_file($commandFile);
 
 if(!isset($config['command']['commandClass'])){
     echo "Missing entry 'commandClass' in $commandFile\n";

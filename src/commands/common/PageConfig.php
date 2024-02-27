@@ -35,7 +35,7 @@ class PageConfig{
         if(count($m) == 0){
             return []; // no page configuration found.
         }
-        // eliminate useless white spaces
+        // eliminate useless white spaces at the beginning of lines
         // that may exist if the yaml embedded in the page is tabulated
         $pos = strpos($m[1], self::MARKER);
         $lines = explode(PHP_EOL, $m[1]);
@@ -46,7 +46,7 @@ class PageConfig{
             }
             $config .= substr($line, $pos) . PHP_EOL;
         }
-        $yaml = jthYAML::parse($config);
+        $yaml = yaml_parse($config);
         return $yaml[self::MARKER];
     }
     

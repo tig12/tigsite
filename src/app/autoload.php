@@ -19,7 +19,6 @@ $DIR_SRC = dirname(__DIR__);
 require_once 'jthAutoload_nonamespace.php';
 
 jthAutoload_nonamespace::init([
-    $DIR_SRC . '/lib',
     $DIR_SRC . '/commands',
 ]);
 
