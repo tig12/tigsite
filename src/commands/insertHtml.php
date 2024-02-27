@@ -5,6 +5,9 @@
     @license    GPL
     @history    2019-02-18 12:13:18+01:00, Thierry Graff : Creation
 ********************************************************************************/
+
+use tiglib\patterns\command\Command;
+
 class insertHtml implements Command {
     
     /** 
@@ -14,20 +17,31 @@ class insertHtml implements Command {
            must exist and be unique.
         
         @param  $params Associative array that MUST contain the following keys :
-            - 'site' (required) : associative array ; see format in docs/
-            - 'command' (required) : associative aray with the following keys :
-            - 'before' or 'after' : html piece of code in existing pages
-               to mark the place where the new html must be inserted.
-            - 'insert-file' or 'insert-string' : html content to insert
+            - 'site' (required) :
+                associative array ; see format in docs/
+            - 'command' (required) :
+                associative array with the following keys :
+            - 'before' or 'after' :
+                html piece of code in existing pages
+                to mark the place where the new html must be inserted.
+            - 'insert-file' or 'insert-string' :
+                html content to insert
         @throws Exception in case of bad parameter
         
         @todo Add parameters "config-file" and "command-file" (only useful for messages in parameter checking)
     **/
-    public static function execute($params){
+    public static function execute($params=[]){
         //
         // check parameters
         //
-        $params['site'] = SiteConfig::compute($params['site']);
+        if(!isset($params['site'])){
+            throw new Exception("MISSING PARAMETER: \$params['site']");
+        }
+        if(!isset($params['command'])){
+            throw new Exception("MISSING PARAMETER: \$params['command']");
+        }
+        
+        $params['site'] = SiteConfig::compute($params['command']);
         
         if(!isset($params['command']['before']) && !isset($params['command']['after'])){
             throw new Exception("\$params['command'] must contain either 'before' or 'after'");
@@ -44,6 +58,12 @@ class insertHtml implements Command {
         if(!isset($params['command']['exclude'])){
             $params['command']['exclude'] = [];
         }
+        
+        //
+        // compute files to process
+        //
+        $files = SiteConfig::computeFiles(siteConfig: $params['site'], command: $params['command']);
+        
         //
         // do the job
         //
@@ -53,22 +73,6 @@ class insertHtml implements Command {
         else{
             $insert = $params['command']['insert-string'];
         }
-        
-        $excludes = [];
-        foreach($params['site']['exclude'] as $exclude){
-            $excludes[] = $params['site']['location'] . DS . $exclude;
-        }
-        foreach($params['command']['exclude'] as $exclude){
-            $excludes[] = $params['site']['location'] . DS . $exclude;
-        }
-        
-        $rscandirParams = [
-            'include'       => '*.html',
-            'exclude'       => $excludes,
-            'return-dirs'   => false,
-            
-        ];
-        $files = jth_rscandir::rscandir($params['site']['location'], $rscandirParams);
         
         if(isset($params['command']['before'])){
             $find = $params['command']['before'];

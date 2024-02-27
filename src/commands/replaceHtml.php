@@ -1,10 +1,13 @@
 <?php
-/******************************************************************************
+/**
     Replaces existing html code in a page by a new html string.
     
     @license    GPL
     @history    2019-02-02 02:47:43+01:00, Thierry Graff : Creation
-********************************************************************************/
+**/
+
+use tiglib\patterns\command\Command;
+
 class replaceHtml implements Command {
     
     /** 
@@ -14,20 +17,24 @@ class replaceHtml implements Command {
            must exist and be unique.
         
         @param  $params Associative array that MUST contain the following keys :
-            - 'site' (required) : associative array corresponding to global site configuration
+            - 'site' (required) :
+                Associative array corresponding to global site configuration
+                Ex: contents of sites/example/commands/replace-footer.yml
                 See format in docs/
-            - 'command' (required) : associative aray with the following keys :
-                - 'before' and 'after' (required) : html pieces of code surrounding the html replaced by this function.
-                
-                - 'replacement-file' : relative path to the file containing
-                   the new html code to insert between 'before' and 'after'.
-                - 'replacement-string' : string containing the new html code
-                   to insert between 'before' and 'after'.
-                - 'replacement-directive' :  string containing the directive of a page configuration.
-                   This directive indicates the path to a file containing
-                   the new html code to insert between 'before' and 'after'.
-                NOTE : 'command' must contain one and only one of
-                        'replacement-file' or 'replacement-string' or 'replacement-directive'
+            - 'command' (required) :
+                Associative array with the following keys :
+                - 'before' and 'after' (required) :
+                    html pieces of code surrounding the html replaced by this function.
+                - 'replacement-file' :
+                    relative path to the file containing the new html code to insert between 'before' and 'after'.
+                - 'replacement-string' :
+                    string containing the new html code to insert between 'before' and 'after'.
+                - 'replacement-directive' :
+                    string containing the directive of a page configuration.
+                    This directive indicates the path to a file containing
+                    the new html code to insert between 'before' and 'after'.
+            NOTE : 'command' must contain one and only one of
+                'replacement-file' or 'replacement-string' or 'replacement-directive'
                 
                 - 'exclude' : array of files that must not be concerned by replacement.
         @throws Exception in case of bad parameter
@@ -36,10 +43,17 @@ class replaceHtml implements Command {
         @todo Maybe add a parameter to specify the number of occurences replaced
         @todo Maybe add a parameter to specify which occurences are replaced
     **/
-    public static function execute($params){
+    public static function execute($params=[]){
         //
         // check parameters
         //
+        if(!isset($params['site'])){
+            throw new Exception("MISSING PARAMETER: \$params['site']");
+        }
+        if(!isset($params['command'])){
+            throw new Exception("MISSING PARAMETER: \$params['command']");
+        }
+        
         $params['site'] = SiteConfig::compute($params['site']);
         
         if(!isset($params['command']['before'])){
@@ -67,34 +81,9 @@ class replaceHtml implements Command {
             $params['command']['exclude'] = [];
         }
         //
-        // prepare variables
+        // compute files to process
         //
-        if($b1){
-            $replace = file_get_contents($params['site']['location'] . DS . $params['command']['replacement-file']);
-        }
-        else if($b2){
-            $replace = $params['command']['replacement-string'];
-        }
-        if(!$b3){
-            $replace = $params['command']['before'] . $replace . $params['command']['after'];
-        }
-        
-        $excludes = [];
-        foreach($params['site']['exclude'] as $exclude){
-            $excludes[] = $params['site']['location'] . DS . $exclude;
-        }
-        foreach($params['command']['exclude'] as $exclude){
-            $excludes[] = $params['site']['location'] . DS . $exclude;
-        }
-        
-        $rscandirParams = [
-            'include'       => '*.html',
-            'exclude'       => $excludes,
-            'return-dirs'   => false,
-            
-        ];
-        $files = jth_rscandir::rscandir($params['site']['location'], $rscandirParams);
-        
+        $files = SiteConfig::computeFiles(siteConfig: $params['site'], command: $params['command']);
         //
         // perform replacement
         //
@@ -126,7 +115,6 @@ class replaceHtml implements Command {
             }
             file_put_contents($file, $new);
         }
-        
     }
     
 }// end class

@@ -1,7 +1,9 @@
 
-Tool to manage the development of a static site.  
+PHP  tool to manage the development of a static site.
 
-See docs/index.html.  
+See docs/index.html
+
+Requires php 8.0 or higher.
 
 Released under the GPL (General Public Licence), version 3 or later.
 

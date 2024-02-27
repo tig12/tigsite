@@ -4,7 +4,7 @@
     - doesn't return '.' and '..'
     - returns absolute paths
     - can be recursive
-    - options can be used to filter the results
+    - options (cf $params) can be used to filter the results
     @param $dir string, required
         absolute path of the directory to scan
     @param $params  associative array, can contain :
@@ -37,14 +37,17 @@
     @history    2010-10-02T20:13:10+02:00, Thierry Graff : Creation 
     @history    2013-05-19 23:47:54+02:00, Thierry Graff : add cut-path parameter
 **/
-class jth_rscandir{
+
+namespace tiglib\filesystem;
+
+
+class rscandir {
     
-    // ***********************************************************
     /**
-        rscandir is only used to treat $params['cut-path']
+        execute is only used to treat $params['cut-path']
         The job is done by {@link rscandir2()} 
     **/
-    public static function rscandir($dir, $params=[]){
+    public static function execute($dir, $params=[]){
         // default values for parameters, and convert to arrays if necessary
         if(!isset($params['include'])){
             $params['include'] = array('*');
@@ -82,12 +85,11 @@ class jth_rscandir{
             return $res;
         }
         return $dirs;
-    }// end rscandir
+    }
     
     
-    // ***********************************************************
     /** 
-        recursive
+        recursive auxiliary of execute()
     **/
     private static function rscandir2($dir, $params=[]){
         //
@@ -137,7 +139,7 @@ class jth_rscandir{
             }
         }
         return $res;
-    }// end rscandir2
+    }
     
     
 }// end class

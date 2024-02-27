@@ -4,6 +4,13 @@
     Page configuration is a piece of yaml included in a html comment
     that must contain a 'tigsite' (self::MARKER) directive.
     
+    Example of inclusion of page configuration :
+    In the html page, between <header> and </header>
+    <!-- 
+    tigsite:
+        sidebar-right: astronomy/sidebar-astronomy.html
+    -->
+    
     @license    GPL
     @history    2019-03-26 12:17:29+01:00 Thierry Graff, Creation
 ********************************************************************************/
