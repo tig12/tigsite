@@ -1,11 +1,15 @@
 <?php
-/******************************************************************************
+/**
     Inserts existing html code in a page.
 
     @license    GPL
     @history    2019-02-18 12:13:18+01:00, Thierry Graff : Creation
-********************************************************************************/
+**/
 
+namespace tigsite\commands;
+
+use tigsite\commands\shared\SiteConfig;
+use tigsite\commands\shared\ExpandVariables;
 use tiglib\patterns\command\Command;
 
 class insertHtml implements Command {
@@ -86,7 +90,7 @@ class insertHtml implements Command {
         for($i=0; $i < $N; $i++){
             echo "processing {$files[$i]}\n";
             $old = file_get_contents($files[$i]);
-            $replace2 = expandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $files[$i]]);
+            $replace2 = ExpandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $files[$i]]);
             $new = str_replace($find, $replace2, $old);
             file_put_contents($files[$i], $new);
         }

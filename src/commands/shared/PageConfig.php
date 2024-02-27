@@ -1,5 +1,5 @@
 <?php
-/******************************************************************************
+/**
     Page configuration management.
     Page configuration is a piece of yaml included in a html comment
     that must contain a 'tigsite' (self::MARKER) directive.
@@ -12,15 +12,16 @@
     -->
     
     @license    GPL
-    @history    2019-03-26 12:17:29+01:00 Thierry Graff, Creation
-********************************************************************************/
+    @history    2019-03-26 12:17:29+01:00, Thierry Graff : Creation
+**/
 
-class PageConfig{
+namespace tigsite\commands\shared;
+
+class PageConfig {
 
     /** String used to identify the page configuration in a html comment **/
     const MARKER = 'tigsite';
     
-    // ******************************************************
     /**
         Computes a page configuration : extracts the yaml from the page, checks the syntax, fills default values and returns a correct config.
         If the page does not contain configuration, returns an empty array.
@@ -50,4 +51,4 @@ class PageConfig{
         return $yaml[self::MARKER];
     }
     
-}// end class
+} // end class

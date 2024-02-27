@@ -6,6 +6,11 @@
     @history    2019-02-02 02:47:43+01:00, Thierry Graff : Creation
 **/
 
+namespace tigsite\commands;
+
+use tigsite\commands\shared\SiteConfig;
+use tigsite\commands\shared\PageConfig;
+use tigsite\commands\shared\ExpandVariables;
 use tiglib\patterns\command\Command;
 
 class replaceHtml implements Command {
@@ -108,7 +113,7 @@ class replaceHtml implements Command {
                 $replace = file_get_contents($replacementFile);
                 $replace = $params['command']['before'] . $replace . $params['command']['after'];
             }
-            $replace2 = expandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $file]);
+            $replace2 = ExpandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $file]);
             $new = preg_replace($pattern, $replace2, $subject, -1, $count);
             if($count == 0){
                 continue;

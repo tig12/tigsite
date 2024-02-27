@@ -38,7 +38,6 @@ if(count($argv) != 3){
 $siteName = $argv[1];
 $command = $argv[2];
 
-
 $siteDir = $ROOT_DIR . DS . 'sites' . DS . $siteName;
 
 if(!is_dir($siteDir)){
@@ -72,13 +71,17 @@ if(!isset($config['command']['commandClass'])){
     exit;
 }
 
-if(!class_exists($config['command']['commandClass'])){
+$commandClass = 'tigsite\\commands\\' . $config['command']['commandClass'];
+//echo "$commandClass\n"; exit;
+
+if(!class_exists($commandClass)){
     echo "Entry 'commandClass' does not correspond to an existing command class in $commandFile\n";
+    echo "Class not found : $commandClass\n";
     exit;
 }
 
 try{
-    $config['command']['commandClass']:: execute($config);
+    $commandClass::execute($config);
 }
 catch(Exception $e){
     echo 'Exception : ' . $e->getMessage() . "\n";

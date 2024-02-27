@@ -1,14 +1,17 @@
 <?php
-/******************************************************************************
-    Site configuration management
+/**
+    Site configuration management.
+    Site configuration comes from sites/<my site>/config.yml
     
     @license    GPL
-    @history    2019-02-18 12:01:41+01:00 Thierry Graff, Creation
-********************************************************************************/
+    @history    2019-02-18 12:01:41+01:00, Thierry Graff : Creation
+**/
+
+namespace tigsite\commands\shared;
 
 use tiglib\filesystem\rscandir;
 
-class SiteConfig{
+class SiteConfig {
 
     /**
         Computes a site configuration : checks the syntax, fills default values and returns a correct config. 

@@ -1,22 +1,23 @@
 <?php
-/******************************************************************************
+/**
+    Used for commands that need to deal with strings that depend on the currently processed html file.
+    A special syntax permits to replace strings located between {{ and }} by strings computed by this class
+    
+    Supported strings :
+    - {{path-to-root}} : relative html path between file currently processed and root of the site.
+    
+    @license    GPL
+    @history    2019-02-18 16:15:29+01:00, Thierry Graff : Creation
+**/
 
-Used for commands that need to deal with strings that depend on the currently processed html file.
-A special syntax permits to replace strings located between {{ and }} by strings computed by this class
+namespace tigsite\commands\shared;
 
-Supported strings :
-- {{path-to-root}} : relative html path between file currently processed and root of the site.
-
-@license    GPL
-@history    2019-02-18 16:15:29+01:00 : Creation
-********************************************************************************/
-
-class expandVariables{
+class ExpandVariables {
     
     // ******************************************************
     /**
-        @param  $subject   The piece of html that may contain strings to expanded
-        @param  $params    Depend on the strings that need to be expanded
+        @param  $subject   The piece of html that may contain strings to expand.
+        @param  $params    Depend on the strings that need to be expanded.
                            See particular functions to have the list of required parameters.
     **/
     public static function expand($subject, $params){
