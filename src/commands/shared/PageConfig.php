@@ -47,6 +47,7 @@ class PageConfig {
             }
             $config .= substr($line, $pos) . PHP_EOL;
         }
+
         $yaml = yaml_parse($config);
         return $yaml[self::MARKER];
     }

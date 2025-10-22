@@ -46,13 +46,13 @@ class ExpandVariables {
     **/
     private static function path_to_root($params){
         if(!isset($params['root-dir'])){
-            throw new Exception("Missing \$params['root-dir']");
+            throw new \Exception("Missing \$params['root-dir']");
         }
         if(!isset($params['current-file'])){
-            throw new Exception("Missing \$params['current-file']");
+            throw new \Exception("Missing \$params['current-file']");
         }
         if(strpos($params['root-dir'], $params['current-file']) != 0){
-            throw new Exception("Incoherence between \$params['root-dir'] and \$params['current-file']");
+            throw new \Exception("Incoherence between \$params['root-dir'] and \$params['current-file']");
         }
         $relative = str_replace($params['root-dir'], '', $params['current-file']);
         $parts = explode('/', $relative);

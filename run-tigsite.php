@@ -22,9 +22,10 @@ Usage :
     <site> : must be a sub-directory of sites/ 
     <action> : must correspond to a yaml file of sites/<site>/commands/ 
 Example :
-    php {$argv[0]} tig12.net replace-footer # Updates the footer of all site pages
-    Uses the command file sites/tig12.net/commands/replace-footer.yml
-
+    # Updates the footer of all site pages
+    # Uses the command file sites/tig12.net/commands/replace-footer.yml
+    php {$argv[0]} tig12.net replace-footer
+    php {$argv[0]} g2 replace-sidebar
 USAGE;
 
 //

@@ -39,25 +39,25 @@ class insertHtml implements Command {
         // check parameters
         //
         if(!isset($params['site'])){
-            throw new Exception("MISSING PARAMETER: \$params['site']");
+            throw new \Exception("MISSING PARAMETER: \$params['site']");
         }
         if(!isset($params['command'])){
-            throw new Exception("MISSING PARAMETER: \$params['command']");
+            throw new \Exception("MISSING PARAMETER: \$params['command']");
         }
         
         $params['site'] = SiteConfig::compute($params['command']);
         
         if(!isset($params['command']['before']) && !isset($params['command']['after'])){
-            throw new Exception("\$params['command'] must contain either 'before' or 'after'");
+            throw new \Exception("\$params['command'] must contain either 'before' or 'after'");
         }
         if(isset($params['command']['before']) && isset($params['command']['after'])){
-            throw new Exception("\$params['command'] cannot contain both 'before' and 'after'");
+            throw new \Exception("\$params['command'] cannot contain both 'before' and 'after'");
         }
         if(!isset($params['command']['insert-file']) && !isset($params['command']['insert-string'])){
-            throw new Exception("\$params['command'] must contain either 'insert-file' or 'insert-string'");
+            throw new \Exception("\$params['command'] must contain either 'insert-file' or 'insert-string'");
         }
         if(isset($params['command']['insert-file']) && isset($params['command']['insert-string'])){
-            throw new Exception("\$params['command'] cannot contain both 'insert-file' and 'insert-string'");
+            throw new \Exception("\$params['command'] cannot contain both 'insert-file' and 'insert-string'");
         }
         if(!isset($params['command']['exclude'])){
             $params['command']['exclude'] = [];

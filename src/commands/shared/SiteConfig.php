@@ -21,7 +21,7 @@ class SiteConfig {
     **/
     public static function compute($config){
         if(!isset($config['location'])){
-            throw new Exception("Missing \$config['site']['location']");
+            throw new \Exception("Missing \$config['site']['location']");
         }
         if(!isset($config['exclude'])){
             $config['exclude'] = [];

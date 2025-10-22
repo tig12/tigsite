@@ -30,17 +30,16 @@ class replaceHtml implements Command {
                 Associative array with the following keys :
                 - 'before' and 'after' (required) :
                     html pieces of code surrounding the html replaced by this function.
-                - 'replacement-file' :
-                    relative path to the file containing the new html code to insert between 'before' and 'after'.
-                - 'replacement-string' :
-                    string containing the new html code to insert between 'before' and 'after'.
-                - 'replacement-directive' :
-                    string containing the directive of a page configuration.
-                    This directive indicates the path to a file containing
-                    the new html code to insert between 'before' and 'after'.
-            NOTE : 'command' must contain one and only one of
-                'replacement-file' or 'replacement-string' or 'replacement-directive'
-                
+                - An istruction about what to replace, which can be one and only one of:
+                    'replacement-file' or 'replacement-string' or 'replacement-directive'
+                        - 'replacement-file' :
+                            relative path to the file containing the new html code to insert between 'before' and 'after'.
+                        - 'replacement-string' :
+                            string containing the new html code to insert between 'before' and 'after'.
+                        - 'replacement-directive' :
+                            string containing the directive of a page configuration.
+                            This directive indicates the path to a file containing
+                            the new html code to insert between 'before' and 'after'.
                 - 'exclude' : array of files that must not be concerned by replacement.
         @throws Exception in case of bad parameter
         
@@ -53,34 +52,34 @@ class replaceHtml implements Command {
         // check parameters
         //
         if(!isset($params['site'])){
-            throw new Exception("MISSING PARAMETER: \$params['site']");
+            throw new \Exception("MISSING PARAMETER: \$params['site']");
         }
         if(!isset($params['command'])){
-            throw new Exception("MISSING PARAMETER: \$params['command']");
+            throw new \Exception("MISSING PARAMETER: \$params['command']");
         }
         
         $params['site'] = SiteConfig::compute($params['site']);
         
         if(!isset($params['command']['before'])){
-            throw new Exception("Missing \$params['command']['before']");
+            throw new \Exception("Missing \$params['command']['before']");
         }
         if(!isset($params['command']['after'])){
-            throw new Exception("Missing \$params['command']['after']");
+            throw new \Exception("Missing \$params['command']['after']");
         }
         $b1 = isset($params['command']['replacement-file']);
         $b2 = isset($params['command']['replacement-string']);
         $b3 = isset($params['command']['replacement-directive']);
         if(!$b1 && !$b2 && !$b3){
-            throw new Exception("\$params['command'] must contain either 'replacement-file' or 'replacement-string' or 'replacement-directive'");
+            throw new \Exception("\$params['command'] must contain either 'replacement-file' or 'replacement-string' or 'replacement-directive'");
         }
         if($b1 && $b2){
-            throw new Exception("\$params['command'] cannot contain both 'replacement-file' and 'replacement-string'");
+            throw new \Exception("\$params['command'] cannot contain both 'replacement-file' and 'replacement-string'");
         }
         if($b1 && $b3){
-            throw new Exception("\$params['command'] cannot contain both 'replacement-file' and 'replacement-directive'");
+            throw new \Exception("\$params['command'] cannot contain both 'replacement-file' and 'replacement-directive'");
         }
         if($b2 && $b3){
-            throw new Exception("\$params['command'] cannot contain both 'replacement-string' and 'replacement-directive'");
+            throw new \Exception("\$params['command'] cannot contain both 'replacement-string' and 'replacement-directive'");
         }
         if(!isset($params['command']['exclude'])){
             $params['command']['exclude'] = [];
@@ -89,6 +88,19 @@ class replaceHtml implements Command {
         // compute files to process
         //
         $files = SiteConfig::computeFiles(siteConfig: $params['site'], command: $params['command']);
+        //
+        // Compute $replace if can be computed once (not replacement-directive)
+        //
+        if(!$b3){
+            if($b1){
+                $filename = $params['site']['location'] . DS . $params['command']['replacement-file'];
+                $replace = file_get_contents($filename);
+            }
+            else { // $b2
+                $replace = $params['command']['replacement-string'];
+            }
+            $replace = $params['command']['before'] . $replace . $params['command']['after'];
+        }
         //
         // perform replacement
         //
@@ -99,6 +111,7 @@ class replaceHtml implements Command {
             if($b3){
                 // $replace must be computed for each page
                 $pageConfig = PageConfig::compute($file);
+
                 if(!isset($pageConfig[$params['command']['replacement-directive']])){
                     // replacement-directive does not exist for this page, no need to replace
                     continue;
@@ -108,7 +121,7 @@ class replaceHtml implements Command {
                 if(!is_file($replacementFile)){
                     $msg = "Bad value for '$replacementDirective' : \"$replacementFile\""
                         . "\n in file $replacementFile";
-                    throw new Exception($msg);
+                    throw new \Exception($msg);
                 }
                 $replace = file_get_contents($replacementFile);
                 $replace = $params['command']['before'] . $replace . $params['command']['after'];
