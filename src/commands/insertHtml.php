@@ -45,7 +45,7 @@ class insertHtml implements Command {
             throw new \Exception("MISSING PARAMETER: \$params['command']");
         }
         
-        $params['site'] = SiteConfig::compute($params['command']);
+        $params['site'] = SiteConfig::compute($params['site']);
         
         if(!isset($params['command']['before']) && !isset($params['command']['after'])){
             throw new \Exception("\$params['command'] must contain either 'before' or 'after'");

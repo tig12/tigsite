@@ -56,7 +56,7 @@ if(!is_file($siteConfigFile)){
 $commandFile = $siteDir . DS . 'commands' . DS . $command . '.yml';
 
 if(!is_file($commandFile)){
-    echo "Wrong command name : file sites/$siteName/commands/$command.yml does not exist\n";
+    echo "Missing command configuration file : file sites/$siteName/commands/$command.yml does not exist\n";
     exit;
 }
 

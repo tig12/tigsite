@@ -3,6 +3,9 @@
 # but version sites/example
 sites/*
 !sites/example
+# and also exclude some commands
+sites/example/commands/one-shot/insert-vince.yml
+
 
 # files marked for deletion
 z.*
