@@ -10,6 +10,7 @@ namespace tigsite\commands;
 
 use tigsite\commands\shared\SiteConfig;
 use tigsite\commands\shared\ExpandVariables;
+use tigsite\commands\shared\CheckParams;
 use tiglib\patterns\command\Command;
 
 class insertHtml implements Command {
@@ -38,12 +39,7 @@ class insertHtml implements Command {
         //
         // check parameters
         //
-        if(!isset($params['site'])){
-            throw new \Exception("MISSING PARAMETER: \$params['site']");
-        }
-        if(!isset($params['command'])){
-            throw new \Exception("MISSING PARAMETER: \$params['command']");
-        }
+        CheckParams::check($params);
         
         $params['site'] = SiteConfig::compute($params['site']);
         
@@ -72,7 +68,7 @@ class insertHtml implements Command {
         // do the job
         //
         if(isset($params['command']['insert-file'])){
-            $insert = file_get_contents($params['site']['location'] . DS . $params['command']['insert-file']);
+            $insert = file_get_contents($params['site']['site-root'] . DS . $params['command']['insert-file']);
         }
         else{
             $insert = $params['command']['insert-string'];
@@ -90,7 +86,7 @@ class insertHtml implements Command {
         for($i=0; $i < $N; $i++){
             echo "processing {$files[$i]}\n";
             $old = file_get_contents($files[$i]);
-            $replace2 = ExpandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $files[$i]]);
+            $replace2 = ExpandVariables::expand($replace, ['root-dir' => $params['site']['site-root'], 'current-file' => $files[$i]]);
             $new = str_replace($find, $replace2, $old);
             file_put_contents($files[$i], $new);
         }

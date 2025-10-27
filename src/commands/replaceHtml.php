@@ -10,6 +10,7 @@ namespace tigsite\commands;
 
 use tigsite\commands\shared\SiteConfig;
 use tigsite\commands\shared\PageConfig;
+use tigsite\commands\shared\CheckParams;
 use tigsite\commands\shared\ExpandVariables;
 use tiglib\patterns\command\Command;
 
@@ -24,7 +25,7 @@ class replaceHtml implements Command {
         @param  $params Associative array that MUST contain the following keys :
             - 'site' (required) :
                 Associative array corresponding to global site configuration
-                Ex: contents of sites/example/commands/replace-footer.yml
+                Ex: contents of config/example/commands/replace-footer.yml
                 See format in docs/
             - 'command' (required) :
                 Associative array with the following keys :
@@ -51,12 +52,7 @@ class replaceHtml implements Command {
         //
         // check parameters
         //
-        if(!isset($params['site'])){
-            throw new \Exception("MISSING PARAMETER: \$params['site']");
-        }
-        if(!isset($params['command'])){
-            throw new \Exception("MISSING PARAMETER: \$params['command']");
-        }
+        CheckParams::check($params);
         
         $params['site'] = SiteConfig::compute($params['site']);
         
@@ -93,7 +89,7 @@ class replaceHtml implements Command {
         //
         if(!$b3){
             if($b1){
-                $filename = $params['site']['location'] . DS . $params['command']['replacement-file'];
+                $filename = $params['site']['site-root'] . DS . $params['command']['replacement-file'];
                 $replace = file_get_contents($filename);
             }
             else { // $b2
@@ -117,7 +113,7 @@ class replaceHtml implements Command {
                     continue;
                 }
                 $replacementDirective = $pageConfig[$params['command']['replacement-directive']];
-                $replacementFile = $params['site']['location'] . DS . $replacementDirective;
+                $replacementFile = $params['site']['site-root'] . DS . $replacementDirective;
                 if(!is_file($replacementFile)){
                     $msg = "Bad value for '$replacementDirective' : \"$replacementFile\""
                         . "\n in file $replacementFile";
@@ -126,7 +122,7 @@ class replaceHtml implements Command {
                 $replace = file_get_contents($replacementFile);
                 $replace = $params['command']['before'] . $replace . $params['command']['after'];
             }
-            $replace2 = ExpandVariables::expand($replace, ['root-dir' => $params['site']['location'], 'current-file' => $file]);
+            $replace2 = ExpandVariables::expand($replace, ['root-dir' => $params['site']['site-root'], 'current-file' => $file]);
             $new = preg_replace($pattern, $replace2, $subject, -1, $count);
             if($count == 0){
                 continue;

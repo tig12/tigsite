@@ -36,7 +36,7 @@ This software has been developed and tested on Linux Debian 12. It should normal
 <pre>
 tigsite
     ├── docs
-    ├── sites
+    ├── config
     ├──  src
     └── run-tigsite.php
 </pre>
@@ -48,7 +48,7 @@ cd tigsite/
 <b class="big2">php run-tigsite.php &lt;site> &lt;command></b>
 </pre>
 
-<code class="bold">&lt;site></code> must be the name of a sub-directory of <code>sites/</code>.
+<code class="bold">&lt;site></code> must be the name of a sub-directory of <code>config/</code>.
 <br><code class="bold">&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
 <br>
 <br>For example, 
@@ -57,7 +57,7 @@ cd tigsite/
 corresponds to this hierarchy :
 
 <pre>
-sites/
+config/
     └── site1
         ├── commands
         │   └── replace-footer.yml
@@ -72,7 +72,7 @@ sites/
         <pre class="bold">php run-tigsite.php site1 asides/replace-footer</pre>
         corresponds to 
 <pre>
-sites/
+config/
     └── site1
         ├── commands
         │   └── asides
@@ -85,10 +85,10 @@ sites/
 
 
 <!-- ********************************************************************************* -->
-<h2>Site directories</h2>
-Each site managed by this tool must correspond to a sub-directory of <code>sites/</code> and have this structure :
+<h2>Site configuration</h2>
+Each site managed by this tool must correspond to a sub-directory of <code>config/</code> and have this structure :
 <pre>
-sites/
+config/
     └── mysite.org
         ├── commands/
         └── config.yml
@@ -129,7 +129,7 @@ exclude:
 <!-- ********************************************************************************* -->
 <h2>Commands</h2>
 
-The yaml files located in <code>sites/&lt;my-site>/commands/</code> are used to specify :
+The yaml files located in <code>config/&lt;my-site>/commands/</code> are used to specify :
 <br>- which command is used.
 <br>- the parameters passed to the command.
 <br>

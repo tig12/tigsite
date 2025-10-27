@@ -1,6 +1,6 @@
 
 
-commandClass: replaceHtml
+command-class: replaceHtml
 before: '<footer>'
 after: '</footer>'
 replacement-file: static/html/footer.html

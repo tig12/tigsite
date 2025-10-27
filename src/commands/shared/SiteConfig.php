@@ -1,7 +1,7 @@
 <?php
 /**
     Site configuration management.
-    Site configuration comes from sites/<my site>/config.yml
+    Site configuration comes from config/<my site>/config.yml
     
     @license    GPL
     @history    2019-02-18 12:01:41+01:00, Thierry Graff : Creation
@@ -20,8 +20,8 @@ class SiteConfig {
         @throws     Exception if a required directive is missing or invalid.
     **/
     public static function compute($config){
-        if(!isset($config['location'])){
-            throw new \Exception("Missing \$config['site']['location']");
+        if(!isset($config['site-root'])){
+            throw new \Exception("Missing \$config['site']['site-root']");
         }
         if(!isset($config['exclude'])){
             $config['exclude'] = [];
@@ -30,12 +30,14 @@ class SiteConfig {
     }
     
     /**
-        Computes the absolute paths of the files specified by a given site config.
+        Computes the absolute paths of the files processed by a command.
+        It uses the "site-root" parameter of the site config.yml as a base path.
+        It takes into account the "exclude" parameter of both config.yml and the yaml file of the command.
         @param      $siteConfig     Associative array
-                        Configuration contained in config.yml of a site.
+                                    Configuration contained in config.yml of a site.
         @param      $command        Associative array
-                        Command (= content of a yaml command file of a site)
-                        May contain a key 'exclude'.
+                                    Command (= contents of a yaml command file)
+                                    May contain a key 'exclude'.
         @return     Regular array of absolute paths.
         @pre        $siteConfig is valid and contains the required entries.
                     No validity check is done here.
@@ -43,17 +45,19 @@ class SiteConfig {
     public static function computeFiles($siteConfig, $command) {
         $excludes = [];
         foreach($siteConfig['exclude'] as $exclude){
-            $excludes[] = $siteConfig['location'] . DS . $exclude;
+            $excludes[] = $siteConfig['site-root'] . DS . $exclude;
         }
-        foreach($command['exclude'] as $exclude){
-            $excludes[] = $siteConfig['location'] . DS . $exclude;
+        if(isset($command['exclude'])){
+            foreach($command['exclude'] as $exclude){
+                $excludes[] = $siteConfig['site-root'] . DS . $exclude;
+            }
         }
         $rscandirParams = [
             'include'       => '*.html',
             'exclude'       => $excludes,
             'return-dirs'   => false,
         ];
-        return rscandir::execute($siteConfig['location'], $rscandirParams);
+        return rscandir::execute($siteConfig['site-root'], $rscandirParams);
     }
     
 }// end class

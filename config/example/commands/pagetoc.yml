@@ -1,0 +1,16 @@
+
+#
+# Class using this config, in src/commands/
+#
+command-class: pagetoc
+
+#
+# Command parameters
+#
+tags: [h2, h3]
+file: test.html
+exclude:
+    - z.*
+insert-after: <article>
+#action: save
+action: print-toc

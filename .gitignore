@@ -1,10 +1,10 @@
 
 # by default, don't version sites/
 # but version sites/example
-sites/*
-!sites/example
+config/*
+!config/example
 # and also exclude some commands
-sites/example/commands/one-shot/insert-vince.yml
+config/example/commands/one-shot/insert-vince.yml
 
 
 # files marked for deletion

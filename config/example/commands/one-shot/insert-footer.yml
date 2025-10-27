@@ -2,7 +2,7 @@
 #
 # Executed only once
 #
-commandClass: insertHtml
+command-class: insertHtml
 before: '</body>'
 insert-string: |
   <footer class="footer">
