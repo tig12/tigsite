@@ -28,6 +28,7 @@ class pagetoc implements Command {
         'toc-tab-length' => 4,
         'insert-after' => '<body>',
         'backup' => false,
+        'backup-extension' => '.bck',
     ];
     
     const POSSIBLE_ACTIONS = ['save', 'print-toc', 'print-full'];
@@ -76,8 +77,13 @@ class pagetoc implements Command {
                         In the resulting page, the toc is inserted after this html fragment of the original page
                         Default: '<body>'
                     - 'backup' bool (optional)
-                        If true, original files are backed up in the same directory (backup files end with ~)
+                        If true, original files are backed up in the same directory
+                        Used only if parametr 'action' = 'save'
                         Default: 'false'
+                    - 'backup-extension' string (optional)
+                        String appended to the original file name when creating the backup files
+                        Used only if parameter 'backup' = true
+                        Default: '.bck'
                         
         @throws \Exception in case of bad parameter
     **/
@@ -103,6 +109,8 @@ class pagetoc implements Command {
         // compute the toc and the resulting text
         //
         foreach($files as $file){
+            self::$toc = '';
+            self::$text = '';
             self::$toc .= '<div class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
             self::compute(
                 level: 0,
@@ -110,9 +118,34 @@ class pagetoc implements Command {
                 prefix: '',
             );
             self::$toc .= "</div>\n";
-echo "============================ toc\n"; echo self::$toc . "\n";
-echo "============================ text\n"; echo self::$text . "\n";
-exit;
+            //
+            // generate output
+            //
+            if(self::$params['command']['action'] == 'print-toc'){
+                echo self::$toc . "\n";
+                continue;
+            }
+            // here, action = 'save' or 'print-full'
+            // Add the toc in the original contents
+            $pattern = '#'
+                . self::$params['command']['insert-after']
+                . '\s*'
+                . '(?:<div class="' . self::$params['command']['toc-css-class'] . '">.*?</div>)?'
+                . '#s';
+            $replace = self::$params['command']['insert-after'] . self::$toc . "\n";
+            self::$text = preg_replace($pattern, $replace, self::$text);
+            if(self::$params['command']['action'] == 'print-full'){ 
+                echo self::$text . "\n";
+                continue;
+            }
+            // here, action = 'save'
+            if(self::$params['command']['backup']) {
+                $newfile = $file . self::$params['command']['backup-extension'];
+                copy($file, $newfile);
+                echo "Generated backup file $newfile\n";
+            }
+            file_put_contents($file, self::$text);
+            echo "Wrote TOC in file $file\n";
         }
     }
     
@@ -134,14 +167,14 @@ exit;
             self::$text .= $text;
             return;
         }
-//print_r($m1); exit;
-        self::$text .= $m1['begin'] . "\n";
+//echo "\nm1 = "; print_r($m1); exit;
+        self::$text .= $m1['begin'];
         //
         // catch the blocks delimited by tags of current level
         //
-        $p2 = '/<' . $curTag . '(?<tag_attributes>.*?)>(?<tag_contents>.*?)<\/' . $curTag . '>(?<end>.*?)(?=<' . $curTag . '|\Z)/s';
+        $p2 = '/<' . $curTag . '(?<tag_attributes>.*?)>(?<tag_contents>.*?)<\/' . $curTag . '>(?<end>.*?)(?=<' . $curTag . '|\Z)/si';
         preg_match_all($p2, $m1['end'], $m2);
-//echo "\n<pre>"; print_r($m2); echo "</pre>\n"; exit;
+//echo "\nm2 = "; print_r($m2); exit;
         if(count($m2[0]) > 0) {
             $tabs1 = str_repeat(self::$toctab, 2*$level + 1);
             $tabs2 = str_repeat(self::$toctab, 2*$level + 2);
@@ -158,6 +191,8 @@ exit;
                 self::$text .= $newHtml;
                 if(count(self::$params['command']['tags']) > $level + 1){
                     self::compute($level + 1, $m2['end'][$i], $newPrefix); //           recursive here
+                } else {
+                    self::$text .= $m2['end'][$i];
                 }
                 self::$toc .= "$tabs2</li>\n";
             }
@@ -166,10 +201,15 @@ exit;
     }
     
     /**
-        @param  $html       String like '<h2 class="myclass" name="myname" id="myid">Paragraph title</h2>'
+        @param  $html       String like '<h2 class="myclass" id="myid">Paragraph title</h2>'
         @param  $tagName    String like 'h2'
         @param  $slug       String like 'paragraph-title'
         @param  $prefix     String like '2-'
+        @return Array containing 2 elements :
+                    - A string containing the original tag with an attribute id added or replaced
+                      Ex: '<h2 class="myclass" id="2-paragraph-title">Paragraph title</h2>'
+                    - The new value of tag id
+                      Ex: '2-paragraph-title'
     **/
     public static function handleTag(string $html, string $tagName, string $slug, string $prefix): array {
 //echo "handleTag(\n    html: $html,\n    tagName: $tagName,\n    slug: $slug,\n    prefix: $prefix)\n";
@@ -178,23 +218,23 @@ exit;
         $tag = $dom->getElementsByTagName($tagName)->item(0);
         $newHtml = '<' . $tagName;
         if($tag){
-            $anchor = $prefix . $slug;
-            $anchorFound = false;
+            $id = $prefix . $slug;
+            $idFound = false;
             foreach ($tag->attributes as $attr) {
-                if($attr->nodeName == 'name') {
-                    $newHtml .= ' name="' . $anchor . '"';
-                    $anchorFound = true;
+                if($attr->nodeName == 'id') {
+                    $newHtml .= ' id="' . $id . '"';
+                    $idFound = true;
                 } else {
                     $newHtml .= ' ' . $attr->nodeName . '="' . $attr->nodeValue . '"';
                 $attributes[$attr->nodeName] = $attr->nodeValue;
                 }
             }
-            if(!$anchorFound){
-                $newHtml .= ' name="' . $anchor . '"';
+            if(!$idFound){
+                $newHtml .= ' id="' . $id . '"';
             }
         }
-        $newHtml .= ">\n";
-        return [$newHtml, $anchor];
+        $newHtml .= '>' . $tag->textContent . '</' . $tagName . '>';
+        return [$newHtml, $id];
     }
     
 }// end class
