@@ -1,7 +1,7 @@
 
 PHP tool to assist the development of a static site.
 
-See docs/index.html
+Installation and usage: See https://tig12.github.io/tigsite/ or browse docs/index.html
 
 Requires php 8.0 or higher.
 
