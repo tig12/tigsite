@@ -2,7 +2,8 @@
 /**
     Inserts existing html code in a page.
 
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2019-02-18 12:13:18+01:00, Thierry Graff : Creation
 **/
 

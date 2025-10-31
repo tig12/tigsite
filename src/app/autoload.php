@@ -2,7 +2,8 @@
 /**
     Unique autoload code to include.
     
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2024-02-27 17:38:41+02:00, Thierry Graff : Creation (copy and adapt g5 code)
 **/
 

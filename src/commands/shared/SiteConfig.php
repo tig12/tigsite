@@ -3,7 +3,8 @@
     Site configuration management.
     Site configuration comes from config/<my site>/config.yml
     
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2019-02-18 12:01:41+01:00, Thierry Graff : Creation
 **/
 

@@ -6,7 +6,8 @@
     Supported strings :
     - {{path-to-root}} : relative html path between file currently processed and root of the site.
     
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2019-02-18 16:15:29+01:00, Thierry Graff : Creation
 **/
 

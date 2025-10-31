@@ -11,7 +11,8 @@
         sidebar-right: astronomy/sidebar-astronomy.html
     -->
     
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2019-03-26 12:17:29+01:00, Thierry Graff : Creation
 **/
 

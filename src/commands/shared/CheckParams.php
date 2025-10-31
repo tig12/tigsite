@@ -2,7 +2,8 @@
 /**
     Performs parameter checks common to several commands.
 
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2025-10-22 13:56:56+02:00, Thierry Graff : Creation
 **/
 

@@ -2,8 +2,8 @@
 /**
     Computes table of contents (toc) of html page(s) from h2 and h3 tags.
     
-    
-    @license    GPL
+    @license    GPL - conforms to file LICENCE located in the root directory of current repository.
+    @copyright  Thierry Graff
     @history    2024-02-23 23:38:48+02:00, Thierry Graff : Creation
 **/
 
