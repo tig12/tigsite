@@ -52,13 +52,7 @@ This tool assists the development of a web site containing static pages. It was 
                 <li>
                     <a href="#6-2-replacehtml">replaceHtml</a>
                 </li>
-                <li>
-                    <a href="#6-3-pagetoc-table-of-contents">pagetoc (table of contents)</a>
-                </li>
             </ul>
-        </li>
-        <li>
-            <a href="#7-variable-substitution">Variable substitution</a>
         </li>
     </ul>
 </div>
@@ -202,13 +196,14 @@ TODO document expanded variables {{path-to-root}}
 <!-- ********************************************************************************* -->
 <h2 id="6-available-commands">Available commands</h2>
 
+Note: commands <code>insertHtml</code> and <code>replaceHtml</code> support the use of <a href="variable-substitution">variable substitution</a>.
+
 <!-- ************************************* -->
 <h3 id="6-1-inserthtml">insertHtml</h3>
 Permits to insert html in one or several html page(s).
 <br>To work, all concerned pages must have a common fragment of html to mark where the html will be inserted.
 <br>The place where the html string should be inserted is marked using either parameter <code>before</code> or <code>after</code>.
 <br>The string to insert is specified using either <code>insert-string</code> or <code>insert-file</code>.
-<br>The computation of inserted string supports the use of <a href="#7-variable-substitution">variable substitution</a>.
 
 <table class="wikitable margin">
     <tr><th>Parameter</th><th>Description</th><th></th><th>Default</th></tr>
@@ -283,7 +278,6 @@ Permits to replace existing html in one or several pages.
 <br>To work, all concerned pages must have 2 common fragments of html to mark where the html will be replaced.
 <br>The place where the html string should be replaced is marked using parameters <code>before</code> and <code>after</code>.
 <br>The new string is specified by one of the parameters <code>replacement-string</code>, <code>replacement-file</code> or <code>replacement-directive</code>
-<br>The computation of replacement string supports the use of <a href="#7-variable-substitution">variable substitution</a>.
 
 <table class="wikitable margin">
     <tr><th>Parameter</th><th>Description</th><th></th><th>Default</th></tr>
@@ -362,7 +356,7 @@ replacement-directive: sidebar-right
 </pre>
 
 It permits to have one specific sidebar per page.
-<br>Pages containing a <a href="#4-page-configuration">page configuration</a> like this are processed:
+<br>Pages containing the following <a href="#4-page-configuration">page configuration</a>:
 <pre>
     &lt;!-- 
     tigsite:
@@ -372,120 +366,11 @@ It permits to have one specific sidebar per page.
 Here, the replacement string will be the content of file <code>astronomy/sidebar-astronomy.html</code>.
 
 <!-- ************************************* -->
-<h3 id="6-3-pagetoc-table-of-contents">pagetoc (table of contents)</h3>
-Permits to compute the table of contents (toc) of one or several html page(s) from a given list of html tags.
-<br>For example, the toc of this page was generated from h2 and h3 tags.
-
-<table class="wikitable margin">
-    <tr><th>Parameter</th><th>Description</th><th></th><th>Default</th></tr>
-    <tr>
-        <td><code>action</code></td>
-        <td>
-            String describing the action to execute
-            <br>Can take one of thes values:
-            <table>
-                <tr>
-                    <td><code>save</code></td>
-                    <td>the original file(s) are overwritten with the new toc.</td>
-                </tr>
-                <tr>
-                    <td><code>print-toc</code></td>
-                    <td>Prints the new toc without overwriting the original files.</td>
-                </tr>
-                <tr>
-                    <td><code>print-full</code></td>
-                    <td>Prints the whole generated page(s) without overwriting the original files.</td>
-                </tr>
-            </table>
-        </td>
-        <td>Optional</td>
-        <td><code>'save'</code></td>
-    </tr>
-    <tr>
-        <td><code>tags</code></td>
-        <td>
-            Array of strings designating the html tags used to build the toc.
-        </td>
-        <td>Optional</td>
-        <td><code>['h2', 'h3']</code></td>
-    </tr>
-    <tr>
-        <td><code>file</code></td>
-        <td>
-            String containing the relative path of the file to process.
-            <br>If not specified, all the files specified in the site configuration (<code>root-dir</code> in <code>config.yml</code>) are processed.
-        </td>
-        <td>Optional</td>
-        <td>Empty string</td>
-    </tr>
-    <tr>
-        <td><code>excludes</code></td>
-        <td>
-            Array of strings containing relative paths of html files to exclude from site <code>root-dir</code>.
-            <br>If parameter <code>file</code> is specified, this parameter is ignored.
-        </td>
-        <td>Optional</td>
-        <td><code>[]</code></td>
-    </tr>
-    <tr>
-        <td><code>toc-css-class</code></td>
-        <td>
-            String, CSS class of the div containing the generated toc.
-        </td>
-        <td>Optional</td>
-        <td><code>pagetoc</code></td>
-    </tr>
-    <tr>
-        <td><code>toc-tab-length</code></td>
-        <td>
-            Number of white spaces used to indent the pagetoc list.
-        </td>
-        <td>Optional</td>
-        <td><code>4</code></td>
-    </tr>
-    <tr>
-        <td><code>insert-after</code></td>
-        <td>
-            In the resulting page, the toc is inserted after this html fragment of the original page.
-        </td>
-        <td>Optional</td>
-        <td><code>&lt;body></code></td>
-    </tr>
-    <tr>
-        <td><code>backup</code></td>
-        <td>
-            Boolean indicating if a copy of the original files should be stored in the same directory.
-            <br>Used only if parameter <code>action</code> = <code>save</code>
-        </td>
-        <td>Optional</td>
-        <td><code>false</code></td>
-    </tr>
-    <tr>
-        <td><code>backup-extension</code></td>
-        <td>
-            String appended to the original file name when creating the backup files.
-            <br>Used only if parameter <code>backup</code> = true
-        </td>
-        <td>Optional</td>
-        <td><code>.bck</code></td>
-    </tr>
-</table>
-
+<h3>pagetoc (table of contents)</h3>
 
 <!-- ********************************************************************************* -->
-<h2 id="7-variable-substitution">Variable substitution</h2>
-Mechanism used by certain commands (<a href="#6-1-inserthtml">insertHtml</a> and <a href="#6-2-replacehtml">replaceHtml</a>) to deal with strings that depend on the currently processed html file.
-<br>A special syntax permits to replace strings located between {{ and }} by computed strings.
+<h2>Variable substitution</h2>
 
-<br><br>Currently, the supported strings are:
-<table class="wikitable margin">
-    <tr>
-        <td><code>{{path-to-root}}</code></td>
-        <td>Relative html path between the file currently processed and the root directory of the site.</td>
-    </tr>
-</table>
-
-<br>
 </article>
 
 </body>

@@ -1,6 +1,11 @@
-
-
+#
+# Class of src/commands/ using this config
+#
 command-class: replaceHtml
+
+#
+# Command parameters
+#
 before: '<footer>'
 after: '</footer>'
 replacement-file: static/html/footer.html

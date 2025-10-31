@@ -1,7 +1,7 @@
 <?php
 /**
     Used for commands that need to deal with strings that depend on the currently processed html file.
-    A special syntax permits to replace strings located between {{ and }} by strings computed by this class
+    A special syntax permits to replace strings located between {{ and }} by strings computed by this class.
     
     Supported strings :
     - {{path-to-root}} : relative html path between file currently processed and root of the site.

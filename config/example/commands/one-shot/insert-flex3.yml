@@ -1,8 +1,15 @@
-
 #
 # Executed only once
 #
+
+#
+# Class of src/commands/ using this config
+#
 command-class: insertHtml
+
+#
+# Command parameters
+#
 before: '<footer>'
 insert-string: |
   

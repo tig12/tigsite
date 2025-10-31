@@ -15,6 +15,6 @@ interface Command {
     /** 
         Do something
     **/
-    public static function execute($params=[]);
+    public static function execute(array $params=[]);
     
 } // end interface

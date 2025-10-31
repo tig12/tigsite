@@ -26,11 +26,13 @@ class insertHtml implements Command {
                 associative array ; see format in docs/
             - 'command' (required) :
                 associative array with the following keys :
-            - 'before' or 'after' :
-                html piece of code in existing pages
-                to mark the place where the new html must be inserted.
-            - 'insert-file' or 'insert-string' :
-                html content to insert
+                - 'before' or 'after' :
+                    html piece of code in existing pages
+                    to mark the place where the new html must be inserted.
+                - 'insert-file' or 'insert-string' :
+                    html content to insert
+                - 'exclude' : 
+                    Array of patterns 
         @throws Exception in case of bad parameter
         
         @todo Add parameters "config-file" and "command-file" (only useful for messages in parameter checking)
@@ -49,6 +51,7 @@ class insertHtml implements Command {
         if(isset($params['command']['before']) && isset($params['command']['after'])){
             throw new \Exception("\$params['command'] cannot contain both 'before' and 'after'");
         }
+        //
         if(!isset($params['command']['insert-file']) && !isset($params['command']['insert-string'])){
             throw new \Exception("\$params['command'] must contain either 'insert-file' or 'insert-string'");
         }

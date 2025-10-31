@@ -62,10 +62,10 @@ class pagetoc implements Command {
                         Default: ['h2', 'h3']
                     - 'file' string (optional)
                         File to process.
-                        If 
+                        If not specified, all the files specified in the site configuration (in <code>config.yml</code>) are processed.
                         Default: ''
                     - 'excludes' array (optional)
-                        Array of strings containing relative paths of html files to exclude from dir (only basenames)
+                        Array of strings containing relative paths of html files to exclude from site root-dir
                         Default: []
                     - 'toc-css-class' string (optional)
                         CSS class of the div containing the generated toc
@@ -78,8 +78,8 @@ class pagetoc implements Command {
                         Default: '<body>'
                     - 'backup' bool (optional)
                         If true, original files are backed up in the same directory
-                        Used only if parametr 'action' = 'save'
-                        Default: 'false'
+                        Used only if parameter 'action' = 'save'
+                        Default: false
                     - 'backup-extension' string (optional)
                         String appended to the original file name when creating the backup files
                         Used only if parameter 'backup' = true
@@ -111,13 +111,13 @@ class pagetoc implements Command {
         foreach($files as $file){
             self::$toc = '';
             self::$text = '';
-            self::$toc .= '<div class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
+            self::$toc .= "\n" . '<div class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
             self::compute(
                 level: 0,
                 text: file_get_contents($file),
                 prefix: '',
             );
-            self::$toc .= "</div>\n";
+            self::$toc .= "</div>";
             //
             // generate output
             //
@@ -132,7 +132,7 @@ class pagetoc implements Command {
                 . '\s*'
                 . '(?:<div class="' . self::$params['command']['toc-css-class'] . '">.*?</div>)?'
                 . '#s';
-            $replace = self::$params['command']['insert-after'] . self::$toc . "\n";
+            $replace = self::$params['command']['insert-after'] . self::$toc;
             self::$text = preg_replace($pattern, $replace, self::$text);
             if(self::$params['command']['action'] == 'print-full'){ 
                 echo self::$text . "\n";
@@ -172,7 +172,7 @@ class pagetoc implements Command {
         //
         // catch the blocks delimited by tags of current level
         //
-        $p2 = '/<' . $curTag . '(?<tag_attributes>.*?)>(?<tag_contents>.*?)<\/' . $curTag . '>(?<end>.*?)(?=<' . $curTag . '|\Z)/si';
+        $p2 = '/\s*<' . $curTag . '(?<tag_attributes>.*?)>(?<tag_contents>.*?)<\/' . $curTag . '>(?<end>.*?)(?=<' . $curTag . '|\z)/si';
         preg_match_all($p2, $m1['end'], $m2);
 //echo "\nm2 = "; print_r($m2); exit;
         if(count($m2[0]) > 0) {

@@ -31,7 +31,7 @@ class replaceHtml implements Command {
                 Associative array with the following keys :
                 - 'before' and 'after' (required) :
                     html pieces of code surrounding the html replaced by this function.
-                - An istruction about what to replace, which can be one and only one of:
+                - An instruction about what to replace, which can be one and only one of:
                     'replacement-file' or 'replacement-string' or 'replacement-directive'
                         - 'replacement-file' :
                             relative path to the file containing the new html code to insert between 'before' and 'after'.
@@ -105,7 +105,7 @@ class replaceHtml implements Command {
             echo "processing $file\n";
             $subject = file_get_contents($file);
             if($b3){
-                // $replace must be computed for each page
+                // replacement-directive, $replace must be computed for each page
                 $pageConfig = PageConfig::compute($file);
 
                 if(!isset($pageConfig[$params['command']['replacement-directive']])){

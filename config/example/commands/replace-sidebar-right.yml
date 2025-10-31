@@ -1,8 +1,16 @@
 #
 # Command to replace the right sidebar
-# Uses the page configuration 'sidebar-right' directive
+# Uses the page configuration directive 'sidebar-right'
+#
+
+#
+# Class of src/commands/ using this config
 #
 command-class: replaceHtml
+
+#
+# Command parameters
+#
 before: '<aside class="sidebar-right">'
 after: '</aside>'
 replacement-directive: sidebar-right
