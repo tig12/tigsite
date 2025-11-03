@@ -21,7 +21,8 @@ This tool assists the development of a web site containing static pages. It was 
 </header>
 
 <article>
-<div class="pagetoc">
+
+<nav class="pagetoc">
     <ul>
         <li>
             <a href="#1-installation">Installation</a>
@@ -61,7 +62,7 @@ This tool assists the development of a web site containing static pages. It was 
             <a href="#7-variable-substitution">Variable substitution</a>
         </li>
     </ul>
-</div>
+</nav>
 
 <!-- ********************************************************************************* -->
 <h2 id="1-installation">Installation</h2>
@@ -249,7 +250,8 @@ Permits to insert html in one or several html page(s).
     <tr>
         <td><code>exclude</code></td>
         <td>
-            Supplementary files to be ignored. Added to parameter <code>exclude</code> of site configuration. See <a href="#3-1-config-yml">config.yml</a>.
+            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
         </td>
         <td>Optional</td>
         <td><code>[]</code></td>
@@ -334,7 +336,8 @@ Permits to replace existing html in one or several pages.
     <tr>
         <td><code>exclude</code></td>
         <td>
-            Supplementary files to be ignored. Added to parameter <code>exclude</code> of site configuration. See <a href="#3-1-config-yml">config.yml</a>.
+            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
         </td>
         <td>Optional</td>
         <td><code>[]</code></td>
@@ -413,19 +416,10 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
         <td><code>file</code></td>
         <td>
             String containing the relative path of the file to process.
-            <br>If not specified, all the files specified in the site configuration (<code>root-dir</code> in <code>config.yml</code>) are processed.
+            <br>If not specified, all the html files contained in <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a> are processed (minus files lilsted in parameter <code>exclude</code>).
         </td>
         <td>Optional</td>
-        <td>Empty string</td>
-    </tr>
-    <tr>
-        <td><code>excludes</code></td>
-        <td>
-            Array of strings containing relative paths of html files to exclude from site <code>root-dir</code>.
-            <br>If parameter <code>file</code> is specified, this parameter is ignored.
-        </td>
-        <td>Optional</td>
-        <td><code>[]</code></td>
+        <td><code>''</code></td>
     </tr>
     <tr>
         <td><code>toc-css-class</code></td>
@@ -452,7 +446,7 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
         <td><code>&lt;body></code></td>
     </tr>
     <tr>
-        <td><code>backup</code></td>
+        <td><code>create-backup</code></td>
         <td>
             Boolean indicating if a copy of the original files should be stored in the same directory.
             <br>Used only if parameter <code>action</code> = <code>save</code>
@@ -464,10 +458,20 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
         <td><code>backup-extension</code></td>
         <td>
             String appended to the original file name when creating the backup files.
-            <br>Used only if parameter <code>backup</code> = true
+            <br>Used only if parameter <code>create-backup</code> = true
         </td>
         <td>Optional</td>
         <td><code>.bck</code></td>
+    </tr>
+    <tr>
+        <td><code>exclude</code></td>
+        <td>
+            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
+            <br>If parameter <code>file</code> is specified, this parameter is ignored.
+        </td>
+        <td>Optional</td>
+        <td><code>[]</code></td>
     </tr>
 </table>
 

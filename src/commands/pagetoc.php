@@ -21,14 +21,14 @@ class pagetoc implements Command {
     
     /** Default values for $params['command'] passed to execute() **/
     const DEFAULT_PARAMS = [
-        'action' => 'save',
-        'file' => '',
-        'file' => '',
-        'toc-css-class' => 'pagetoc',
-        'toc-tab-length' => 4,
-        'insert-after' => '<body>',
-        'backup' => false,
-        'backup-extension' => '.bck',
+        'action'            => 'save',
+        'tags'              => ['h2', 'h3'],
+        'file'              => '',
+        'toc-css-class'     => 'pagetoc',
+        'toc-tab-length'    => 4,
+        'insert-after'      => '<body>',
+        'create-backup'            => false,
+        'backup-extension'  => '.bck',
     ];
     
     const POSSIBLE_ACTIONS = ['save', 'print-toc', 'print-full'];
@@ -59,6 +59,7 @@ class pagetoc implements Command {
                             'print-full'    : Prints the whole file(s) without overriding the files.
                         Default: 'save'
                     - 'tags' array (optional)
+                        Array of strings designating the html tags used to build the toc.
                         Default: ['h2', 'h3']
                     - 'file' string (optional)
                         File to process.
@@ -76,13 +77,13 @@ class pagetoc implements Command {
                     - 'insert-after' string (optional)
                         In the resulting page, the toc is inserted after this html fragment of the original page
                         Default: '<body>'
-                    - 'backup' bool (optional)
+                    - 'create-backup' bool (optional)
                         If true, original files are backed up in the same directory
                         Used only if parameter 'action' = 'save'
                         Default: false
                     - 'backup-extension' string (optional)
                         String appended to the original file name when creating the backup files
-                        Used only if parameter 'backup' = true
+                        Used only if parameter 'create-backup' = true
                         Default: '.bck'
                         
         @throws \Exception in case of bad parameter
@@ -98,7 +99,6 @@ class pagetoc implements Command {
         // global vars
         self::$params = $params;
         self::$toctab = str_repeat(' ', self::$params['command']['toc-tab-length']);
-//echo "\n<pre>"; print_r(self::$params); echo "</pre>\n"; exit;
         //
         // compute files to process
         //
@@ -111,13 +111,18 @@ class pagetoc implements Command {
         foreach($files as $file){
             self::$toc = '';
             self::$text = '';
-            self::$toc .= "\n" . '<div class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
+            self::$toc .= "\n" . '<nav class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
+            $text = @file_get_contents($file);
+            if($text === false){
+                echo "ERROR: impossible to read file $file\n";
+                continue;
+            }
             self::compute(
                 level: 0,
                 text: file_get_contents($file),
                 prefix: '',
             );
-            self::$toc .= "</div>";
+            self::$toc .= "</nav>";
             //
             // generate output
             //
@@ -128,18 +133,40 @@ class pagetoc implements Command {
             // here, action = 'save' or 'print-full'
             // Add the toc in the original contents
             $pattern = '#'
+                . '('
                 . self::$params['command']['insert-after']
                 . '\s*'
-                . '(?:<div class="' . self::$params['command']['toc-css-class'] . '">.*?</div>)?'
+                . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
+                . ')'
+                . '#s';
+            preg_match($pattern, self::$text, $m);
+            if(!isset($m[1])){
+                echo "ERROR: unable to insert new table of contents in $file\n"
+                    . "Check that the file contains " . self::$params['command']['insert-after'];
+                continue;
+            }
+            $insertNewline = (trim($m[1]) == self::$params['command']['insert-after']) ? true : false; //  true if the page does not already contain a pagetoc.
+/* 
+            // for unknown reason, preg_replace was greedy, so used str_replace instead
+            $pattern = '#'
+                . self::$params['command']['insert-after']
+                . '\s*'
+                . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
                 . '#s';
             $replace = self::$params['command']['insert-after'] . self::$toc;
             self::$text = preg_replace($pattern, $replace, self::$text);
+*/
+            self::$text = str_replace(
+                $m[1],
+                self::$params['command']['insert-after'] . "\n" . self::$toc . ($insertNewline ? "\n\n" : ''),
+                self::$text,
+            );
             if(self::$params['command']['action'] == 'print-full'){ 
                 echo self::$text . "\n";
                 continue;
             }
             // here, action = 'save'
-            if(self::$params['command']['backup']) {
+            if(self::$params['command']['create-backup']) {
                 $newfile = $file . self::$params['command']['backup-extension'];
                 copy($file, $newfile);
                 echo "Generated backup file $newfile\n";
@@ -153,10 +180,7 @@ class pagetoc implements Command {
         Recursive
     **/
     public static function compute(int $level, string $text, string $prefix): void {
-//echo "======\ncompute(level: $level, prefix: $prefix)\n";
-//echo "text = $text\n";
         $curTag = self::$params['command']['tags'][$level];
-//echo "curTag = $curTag\n";
         //
         // catch the beginning of the text
         //
@@ -167,14 +191,12 @@ class pagetoc implements Command {
             self::$text .= $text;
             return;
         }
-//echo "\nm1 = "; print_r($m1); exit;
         self::$text .= $m1['begin'];
         //
         // catch the blocks delimited by tags of current level
         //
         $p2 = '/\s*<' . $curTag . '(?<tag_attributes>.*?)>(?<tag_contents>.*?)<\/' . $curTag . '>(?<end>.*?)(?=<' . $curTag . '|\z)/si';
         preg_match_all($p2, $m1['end'], $m2);
-//echo "\nm2 = "; print_r($m2); exit;
         if(count($m2[0]) > 0) {
             $tabs1 = str_repeat(self::$toctab, 2*$level + 1);
             $tabs2 = str_repeat(self::$toctab, 2*$level + 2);
@@ -212,7 +234,6 @@ class pagetoc implements Command {
                       Ex: '2-paragraph-title'
     **/
     public static function handleTag(string $html, string $tagName, string $slug, string $prefix): array {
-//echo "handleTag(\n    html: $html,\n    tagName: $tagName,\n    slug: $slug,\n    prefix: $prefix)\n";
         $dom = new \DOMDocument();
         @$dom->loadHTML($html);
         $tag = $dom->getElementsByTagName($tagName)->item(0);
