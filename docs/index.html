@@ -149,6 +149,7 @@ exclude:
   - static
 </pre>
 
+Possible directives are:
 <table class="wikitable margin">
     <tr><th>Directive</th><th>Description</th><th></th><th>Default</th></tr>
     <tr>
@@ -160,7 +161,7 @@ exclude:
     <tr>
         <td><code>exclude</code></td>
         <td>
-            Array of strings containing regular expressions of relative paths (relative to <code>site-root</code>) to files to exclude from processing.
+            Array of strings containing regular expressions of relative paths to files to exclude from processing (relative to <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>)).
         </td>
         <td>Optional</td>
         <td><code>[]</code></td>
@@ -242,7 +243,7 @@ Permits to insert html in one or several html page(s).
     <tr>
         <td><code>insert-file</code></td>
         <td>
-            Relative path (relative to <code>site-root</code>) to a file contianing the string to insert.
+            Relative path to a file containing the string to insert (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
         </td>
         <td>Optional</td>
         <td><code>null</code></td>
@@ -250,7 +251,7 @@ Permits to insert html in one or several html page(s).
     <tr>
         <td><code>exclude</code></td>
         <td>
-            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
             <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
         </td>
         <td>Optional</td>
@@ -318,7 +319,7 @@ Permits to replace existing html in one or several pages.
     <tr>
         <td><code>replacement-file</code></td>
         <td>
-            Relative path (relative to <code>site-root</code>) to a file contianing the replacement string.
+            Relative path to a file contianing the replacement string (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
         </td>
         <td>Optional</td>
         <td><code>null</code></td>
@@ -336,7 +337,7 @@ Permits to replace existing html in one or several pages.
     <tr>
         <td><code>exclude</code></td>
         <td>
-            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
             <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
         </td>
         <td>Optional</td>
@@ -416,7 +417,7 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
         <td><code>file</code></td>
         <td>
             String containing the relative path of the file to process.
-            <br>If not specified, all the html files contained in <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a> are processed (minus files lilsted in parameter <code>exclude</code>).
+            <br>If not specified, all the html files contained in <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a> are processed (minus files lilsted in parameter <code>exclude</code>).
         </td>
         <td>Optional</td>
         <td><code>''</code></td>
@@ -466,7 +467,7 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
     <tr>
         <td><code>exclude</code></td>
         <td>
-            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>root-dir</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
             <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
             <br>If parameter <code>file</code> is specified, this parameter is ignored.
         </td>
@@ -485,7 +486,7 @@ Mechanism used by certain commands (<a href="#6-1-inserthtml">insertHtml</a> and
 <table class="wikitable margin">
     <tr>
         <td><code>{{path-to-root}}</code></td>
-        <td>Relative html path between the file currently processed and the root directory of the site.</td>
+        <td>Relative html path between the file currently processed and the root directory of the site (<code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).</td>
     </tr>
 </table>
 
