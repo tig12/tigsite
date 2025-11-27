@@ -31,7 +31,7 @@ class pagetoc implements Command {
         'backup-extension'  => '.bck',
     ];
     
-    const POSSIBLE_ACTIONS = ['save', 'print-toc', 'print-full'];
+    const POSSIBLE_ACTIONS = ['save', 'print-toc', 'print-full', 'list-files'];
     
     /** Cleaned version of parameter $params passed to execute() **/
     public static array $params = [];
@@ -57,6 +57,7 @@ class pagetoc implements Command {
                             'save'          : the concerned file(s) are overwritten with the new toc.
                             'print-toc'     : Prints the new toc without overriding the files.
                             'print-full'    : Prints the whole file(s) without overriding the files.
+                            'list-files'    : Prints the files that would be processed by this command.
                         Default: 'save'
                     - 'tags' array (optional)
                         Array of strings designating the html tags used to build the toc.
@@ -109,6 +110,10 @@ class pagetoc implements Command {
         // compute the toc and the resulting text
         //
         foreach($files as $file){
+            if(self::$params['command']['action'] == 'list-files'){
+                echo $file . "\n";
+                continue;
+            }
             self::$toc = '';
             self::$text = '';
             self::$toc .= "\n" . '<nav class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
