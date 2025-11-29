@@ -240,7 +240,7 @@ class pagetoc implements Command {
     **/
     public static function handleTag(string $html, string $tagName, string $slug, string $prefix): array {
         $dom = new \DOMDocument();
-        @$dom->loadHTML($html);
+        @$dom->loadHTML('<?xml encoding="UTF-8">' . $html); // add xml tag to force UTF8 in dom parser - fix given by chatgpt 2025-11-29
         $tag = $dom->getElementsByTagName($tagName)->item(0);
         $newHtml = '<' . $tagName;
         if($tag){
