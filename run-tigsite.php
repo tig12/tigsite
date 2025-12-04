@@ -84,9 +84,11 @@ if(!class_exists($commandClass)){
 try{
     $commandClass::execute($config);
 }
+catch(InvalidArgumentException $e){
+    echo 'INCORRECT CALL : ' . $e->getMessage() . "\n";
+}
 catch(Exception $e){
     echo 'Exception : ' . $e->getMessage() . "\n";
     echo $e->getFile() . ' - line ' . $e->getLine() . "\n";
     echo $e->getTraceAsString() . "\n";
 }
-

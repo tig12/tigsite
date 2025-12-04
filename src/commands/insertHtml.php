@@ -19,8 +19,7 @@ class insertHtml implements Command {
     /** 
         Inserts existing html code in a page.
         Restrictions : 
-        - In the existing pages, the html code specified by $params['before'] or $params['after'] must exist.
-           must exist and be unique.
+        - In the existing pages, the html code specified by $params['before'] or $params['after'] must exist and be unique.
         
         @param  $params Associative array that MUST contain the following keys :
             - 'site' (required) :
@@ -47,17 +46,17 @@ class insertHtml implements Command {
         $params['site'] = SiteConfig::compute($params['site']);
         
         if(!isset($params['command']['before']) && !isset($params['command']['after'])){
-            throw new \Exception("\$params['command'] must contain either 'before' or 'after'");
+            throw new \InvalidArgumentException("You must specify either 'before' or 'after'");
         }
         if(isset($params['command']['before']) && isset($params['command']['after'])){
-            throw new \Exception("\$params['command'] cannot contain both 'before' and 'after'");
+            throw new \InvalidArgumentException("You can't specify both 'before' and 'after'");
         }
         //
         if(!isset($params['command']['insert-file']) && !isset($params['command']['insert-string'])){
-            throw new \Exception("\$params['command'] must contain either 'insert-file' or 'insert-string'");
+            throw new \InvalidArgumentException("You must specify either 'insert-file' or 'insert-string'");
         }
         if(isset($params['command']['insert-file']) && isset($params['command']['insert-string'])){
-            throw new \Exception("\$params['command'] cannot contain both 'insert-file' and 'insert-string'");
+            throw new \InvalidArgumentException("You can't specify both 'insert-file' and 'insert-string'");
         }
         if(!isset($params['command']['exclude'])){
             $params['command']['exclude'] = [];

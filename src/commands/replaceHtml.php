@@ -58,25 +58,25 @@ class replaceHtml implements Command {
         $params['site'] = SiteConfig::compute($params['site']);
         
         if(!isset($params['command']['before'])){
-            throw new \Exception("Missing \$params['command']['before']");
+            throw new \InvalidArgumentException("Missing argument 'before'");
         }
         if(!isset($params['command']['after'])){
-            throw new \Exception("Missing \$params['command']['after']");
+            throw new \InvalidArgumentException("Missing argument 'after'");
         }
         $b1 = isset($params['command']['replacement-file']);
         $b2 = isset($params['command']['replacement-string']);
         $b3 = isset($params['command']['replacement-directive']);
         if(!$b1 && !$b2 && !$b3){
-            throw new \Exception("\$params['command'] must contain either 'replacement-file' or 'replacement-string' or 'replacement-directive'");
+            throw new \InvalidArgumentException("You must specify either 'replacement-file' or 'replacement-string' or 'replacement-directive'");
         }
         if($b1 && $b2){
-            throw new \Exception("\$params['command'] cannot contain both 'replacement-file' and 'replacement-string'");
+            throw new \InvalidArgumentException("You can't specify both 'replacement-file' and 'replacement-string'");
         }
         if($b1 && $b3){
-            throw new \Exception("\$params['command'] cannot contain both 'replacement-file' and 'replacement-directive'");
+            throw new \InvalidArgumentException("You can't specify both 'replacement-file' and 'replacement-directive'");
         }
         if($b2 && $b3){
-            throw new \Exception("\$params['command'] cannot contain both 'replacement-string' and 'replacement-directive'");
+            throw new \InvalidArgumentException("You can't specify both 'replacement-string' and 'replacement-directive'");
         }
         if(!isset($params['command']['exclude'])){
             $params['command']['exclude'] = [];
@@ -118,7 +118,7 @@ class replaceHtml implements Command {
                 if(!is_file($replacementFile)){
                     $msg = "Bad value for '$replacementDirective' : \"$replacementFile\""
                         . "\n in file $replacementFile";
-                    throw new \Exception($msg);
+                    throw new \InvalidArgumentException($msg);
                 }
                 $replace = file_get_contents($replacementFile);
                 $replace = $params['command']['before'] . $replace . $params['command']['after'];
