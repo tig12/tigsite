@@ -26,8 +26,9 @@ class pagetoc implements Command {
         'file'              => '',
         'toc-css-class'     => 'pagetoc',
         'toc-tab-length'    => 4,
-        'insert-after'      => '<body>',
-        'create-backup'            => false,
+        'insert-after'      => null,
+        'insert-before'     => null,
+        'create-backup'     => false,
         'backup-extension'  => '.bck',
     ];
     
@@ -76,8 +77,13 @@ class pagetoc implements Command {
                         Number of white spaces used to indent the pagetoc list.
                         Default: 4
                     - 'insert-after' string (optional)
-                        In the resulting page, the toc is inserted after this html fragment of the original page
-                        Default: '<body>'
+                        In the resulting page, the toc is inserted after this html fragment of the original page.
+                        Cannot be used if insert-before is used.
+                        Default: null
+                    - 'insert-before' string (optional)
+                        In the resulting page, the toc is inserted before this html fragment of the original page.
+                        Cannot be used if insert-after is used.
+                        Default: null
                     - 'create-backup' bool (optional)
                         If true, original files are backed up in the same directory
                         Used only if parameter 'action' = 'save'
@@ -97,6 +103,13 @@ class pagetoc implements Command {
         CheckParams::check($params);
         $params['site'] = SiteConfig::compute($params['site']);
         $params['command'] = array_replace(self::DEFAULT_PARAMS, $params['command']);
+        // check insert-after / insert-before
+        if(is_null($params['command']['insert-before']) && is_null($params['command']['insert-after'])){
+            throw new \InvalidArgumentException("You must specify either 'insert-before' or 'insert-after'");
+        }
+        if(!is_null($params['command']['insert-before']) && !is_null($params['command']['insert-after'])){
+            throw new \InvalidArgumentException("'insert-before' and 'insert-after' cannot be used at the same time");
+        }
         // global vars
         self::$params = $params;
         self::$toctab = str_repeat(' ', self::$params['command']['toc-tab-length']);
@@ -122,6 +135,7 @@ class pagetoc implements Command {
                 echo "ERROR: impossible to read file $file\n";
                 continue;
             }
+            // HERE MAIN CALL - computes self::$toc and self::$text
             self::compute(
                 level: 0,
                 text: file_get_contents($file),
@@ -137,35 +151,48 @@ class pagetoc implements Command {
             }
             // here, action = 'save' or 'print-full'
             // Add the toc in the original contents
-            $pattern = '#'
-                . '('
-                . self::$params['command']['insert-after']
-                . '\s*'
-                . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
-                . ')'
-                . '#s';
+            if(!is_null($params['command']['insert-after'])){
+                $pattern =
+                      '#('
+                    . self::$params['command']['insert-after']
+                    . '\s*'
+                    . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
+                    . ')#s';
+            } else {
+                $pattern =
+                      '#('
+                    . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
+                    . '\s*'
+                    . self::$params['command']['insert-before']
+                    . ')#s';
+            }
             preg_match($pattern, self::$text, $m);
             if(!isset($m[1])){
+                $insertMark = !is_null(self::$params['command']['insert-after']) ? self::$params['command']['insert-after'] : self::$params['command']['insert-before'];
                 echo "ERROR: unable to insert new table of contents in $file\n"
-                    . "Check that the file contains " . self::$params['command']['insert-after'];
+                    . "Check that the file contains $insertMark";
                 continue;
             }
-            $insertNewline = (trim($m[1]) == self::$params['command']['insert-after']) ? true : false; //  true if the page does not already contain a pagetoc.
-/* 
+            // $insertNewline is true if the page does not already contain a pagetoc.
+            if(!is_null($params['command']['insert-after'])){
+                $insertNewline = (trim($m[1]) == self::$params['command']['insert-after']) ? true : false;
+            } else {
+                $insertNewline = (trim($m[1]) == self::$params['command']['insert-before']) ? true : false;
+            }
             // for unknown reason, preg_replace was greedy, so used str_replace instead
-            $pattern = '#'
-                . self::$params['command']['insert-after']
-                . '\s*'
-                . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
-                . '#s';
-            $replace = self::$params['command']['insert-after'] . self::$toc;
-            self::$text = preg_replace($pattern, $replace, self::$text);
-*/
-            self::$text = str_replace(
-                $m[1],
-                self::$params['command']['insert-after'] . "\n" . self::$toc . ($insertNewline ? "\n\n" : ''),
-                self::$text,
-            );
+            if(!is_null($params['command']['insert-after'])){
+                self::$text = str_replace(
+                    $m[1],
+                    self::$params['command']['insert-after'] . "\n" . self::$toc . ($insertNewline ? "\n\n" : ''),
+                    self::$text,
+                );
+            } else {
+                self::$text = str_replace( // for unknown reason, preg_replace was greedy, so used str_replace instead
+                    $m[1],
+                    ($insertNewline ? "\n\n" : '') . trim(self::$toc) . "\n" . self::$params['command']['insert-before'],
+                    self::$text,
+                );
+            }
             if(self::$params['command']['action'] == 'print-full'){ 
                 echo self::$text . "\n";
                 continue;
@@ -182,7 +209,7 @@ class pagetoc implements Command {
     }
     
     /**
-        Recursive
+        Recursively computes self::$toc and self::$text
     **/
     public static function compute(int $level, string $text, string $prefix): void {
         $curTag = self::$params['command']['tags'][$level];
@@ -228,6 +255,9 @@ class pagetoc implements Command {
     }
     
     /**
+        For a tag used by pagetoc, computes
+            - the new html id of tag
+            - the html string containing the new version of the tag. 
         @param  $html       String like '<h2 class="myclass" id="myid">Paragraph title</h2>'
         @param  $tagName    String like 'h2'
         @param  $slug       String like 'paragraph-title'

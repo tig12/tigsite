@@ -447,9 +447,19 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
         <td><code>insert-after</code></td>
         <td>
             In the resulting page, the toc is inserted after this html fragment of the original page.
+            <br>Cannot be used if <code>insert-before</code> is used.
         </td>
         <td>Optional</td>
-        <td><code>&lt;body></code></td>
+        <td><code>null</code></td>
+    </tr>
+    <tr>
+        <td><code>insert-before</code></td>
+        <td>
+            In the resulting page, the toc is inserted before this html fragment of the original page.
+            <br>Cannot be used if <code>insert-after</code> is used.
+        </td>
+        <td>Optional</td>
+        <td><code>null</code></td>
     </tr>
     <tr>
         <td><code>create-backup</code></td>
