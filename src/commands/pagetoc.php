@@ -43,7 +43,7 @@ class pagetoc implements Command {
     /** Stores the resulting table of contents **/
     private static string $toc = '';
     
-    /** Shortcut tfor tab used when generating toc **/
+    /** Shortcut for tab used when generating toc **/
     private static string $toctab = '';
     
     /** 

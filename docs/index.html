@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
     <title>tigsite</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/jpeg" href="static/img/favicon.jpg">
     <meta name="description" content="A tool to assist the development of a static site">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <link rel="copyright" href="http://www.gnu.org/copyleft/gpl.html"/>
@@ -14,7 +15,7 @@
     <header>
 <h1>Tigsite (PHP)</h1>
 <div class="intro">
-This tool assists the development of a web site containing static pages. It was developed to help writing <a href="https://tig12.net">tig12.net</a>
+This tool assists the development of a web site containing static pages. It is used to help writing <a href="https://tig12.net">tig12.net</a>, <a href="https://tig12.github.io/g5">tig12.github.io/g5</a> or <a href="https://larzac.info/cnam">larzac.info/cnam</a>
 <br>Tigsite could be called a "reverse-framework": instead of storing the information in a database and write code to generate web pages, the information is directly stored in the html pages, and the <code>tigsite</code> code modifies the html pages.
 <br>Mainly used to handle navigation or modifications on all pages.
 </div>
@@ -94,7 +95,6 @@ cd tigsite/
 
 <code class="bold">&lt;site></code> must be the name of a sub-directory of <code>config/</code>.
 <br><code class="bold">&lt;command></code> must be the name of a yaml file inside site's <code>commands/</code> sub-directory.
-<br>
 <br>For example, 
 <pre class="bold">php run-tigsite.php site1 replace-footer</pre>
 
@@ -189,17 +189,14 @@ Each html page of a site may contain its own configuration, used by some command
 
 When executing the program, the yaml files located in <code>config/&lt;my-site>/commands/</code> are used to specify :
 <ul>
-    <li>which command is used,</li>
+    <li>which php command is used,</li>
     <li>the parameters passed to the command.</li>
 </ul>
 See below for examples of a command file.
-<br>The available commands are located in <code>src/commands</code>.
+<br>The available php commands are located in <code>src/commands</code>.
 <br>In a command file, the unique required directive is <code><b>command-class</b></code>
 <br>The other directives depend on the command ; they are passed as parameters to the command.
 
-<!-- 
-TODO document expanded variables {{path-to-root}}
--->
 
 <!-- ********************************************************************************* -->
 <h2 id="6-available-commands">Available commands</h2>
@@ -252,7 +249,7 @@ Permits to insert html in one or several html page(s).
         <td><code>exclude</code></td>
         <td>
             Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
-            <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
+            <br>This list is added to the list built from parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
         </td>
         <td>Optional</td>
         <td><code>[]</code></td>
@@ -276,6 +273,7 @@ command-class: replaceHtml
 #
 before: '<aside class="sidebar-right">'
 after: '</aside>'
+# in a html comment of the processed page
 replacement-directive: sidebar-right
 </pre>
 
@@ -319,7 +317,7 @@ Permits to replace existing html in one or several pages.
     <tr>
         <td><code>replacement-file</code></td>
         <td>
-            Relative path to a file contianing the replacement string (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            Relative path to a file containing the replacement string (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
         </td>
         <td>Optional</td>
         <td><code>null</code></td>
@@ -338,7 +336,7 @@ Permits to replace existing html in one or several pages.
         <td><code>exclude</code></td>
         <td>
             Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
-            <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
+            <br>This list is added to the list built from parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
         </td>
         <td>Optional</td>
         <td><code>[]</code></td>
@@ -379,14 +377,17 @@ Here, the replacement string will be the content of file <code>astronomy/sidebar
 <h3 id="6-3-pagetoc-table-of-contents">pagetoc (table of contents)</h3>
 Permits to compute the table of contents (toc) of one or several html page(s) from a given list of html tags.
 <br>For example, the toc of this page was generated from h2 and h3 tags.
-<br>This command can be used if all the html pages that are processed share a common piece of html which permits to indicate where the toc must be inserted (parameter <code>insert-after</code>).
+<br>This command needs one requirement:
+<br>All the html pages that are processed must SHARE A COMMON PIECE OF HTML which permits to indicate WHERE THE TOC MUST BE INSERTED (parameter <code>insert-after</code> or <code>insert-before</code>).
 
 <table class="wikitable margin">
-    <tr><th>Parameter</th><th>Description</th><th></th><th>Default</th></tr>
+    <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
     <tr>
         <td><code>action</code></td>
+        <td>string</td>
+        <td><code>'save'</code></td>
         <td>
-            String describing the action to execute
+            Describes the action to execute
             <br>Can take one of thes values:
             <table>
                 <tr>
@@ -407,87 +408,85 @@ Permits to compute the table of contents (toc) of one or several html page(s) fr
                 </tr>
             </table>
         </td>
-        <td>Optional</td>
-        <td><code>'save'</code></td>
-    </tr>
-    <tr>
-        <td><code>tags</code></td>
-        <td>
-            Array of strings designating the html tags used to build the toc.
-        </td>
-        <td>Optional</td>
-        <td><code>['h2', 'h3']</code></td>
     </tr>
     <tr>
         <td><code>file</code></td>
-        <td>
-            String containing the relative path of the file to process.
-            <br>If not specified, all the html files contained in <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a> are processed (minus files lilsted in parameter <code>exclude</code>).
-        </td>
-        <td>Optional</td>
+        <td>string</td>
         <td><code>''</code></td>
+        <td>
+            Contains the relative path of the file to process.
+            <br>If not specified, all the html files contained in <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a> are processed (minus files listed in parameter <code>exclude</code>).
+        </td>
     </tr>
     <tr>
-        <td><code>toc-css-class</code></td>
+        <td><code>exclude</code></td>
+        <td>Array of <br>strings</td>
+        <td><code>[]</code></td>
         <td>
-            String, CSS class of the div containing the generated toc.
+             Contains regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
+            <br>This list is added to the list built from parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
+            <br>If parameter <code>file</code> is specified, this parameter is ignored.
         </td>
-        <td>Optional</td>
-        <td><code>pagetoc</code></td>
-    </tr>
-    <tr>
-        <td><code>toc-tab-length</code></td>
-        <td>
-            Number of white spaces used to indent the pagetoc list.
-        </td>
-        <td>Optional</td>
-        <td><code>4</code></td>
     </tr>
     <tr>
         <td><code>insert-after</code></td>
+        <td>string</td>
+        <td><code>null</code></td>
         <td>
             In the resulting page, the toc is inserted after this html fragment of the original page.
             <br>Cannot be used if <code>insert-before</code> is used.
         </td>
-        <td>Optional</td>
-        <td><code>null</code></td>
     </tr>
     <tr>
         <td><code>insert-before</code></td>
+        <td>string</td>
+        <td><code>null</code></td>
         <td>
             In the resulting page, the toc is inserted before this html fragment of the original page.
             <br>Cannot be used if <code>insert-after</code> is used.
         </td>
-        <td>Optional</td>
-        <td><code>null</code></td>
+    </tr>
+    <tr>
+        <td><code>tags</code></td>
+        <td>Array of <br>strings</td>
+        <td><code>['h2', 'h3']</code></td>
+        <td>
+             The html tags used to build the table of content hierarchy.
+        </td>
     </tr>
     <tr>
         <td><code>create-backup</code></td>
+        <td>boolean</td>
+        <td><code>false</code></td>
         <td>
-            Boolean indicating if a copy of the original files should be stored in the same directory.
+            True if a copy of the original files should be stored in the same directory.
             <br>Used only if parameter <code>action</code> = <code>save</code>
         </td>
-        <td>Optional</td>
-        <td><code>false</code></td>
     </tr>
     <tr>
         <td><code>backup-extension</code></td>
+        <td>string</td>
+        <td><code>'.bck'</code></td>
         <td>
             String appended to the original file name when creating the backup files.
             <br>Used only if parameter <code>create-backup</code> = true
         </td>
-        <td>Optional</td>
-        <td><code>.bck</code></td>
     </tr>
     <tr>
-        <td><code>exclude</code></td>
+        <td><code>toc-css-class</code></td>
+        <td>string</td>
+        <td><code>'pagetoc'</code></td>
         <td>
-            Array of strings containing regular expressions of relative paths of html files to exclude (relative to site <code>site-root</code> defined in <a href="#3-1-config-yml">config.yml</a>).
-            <br>Added to parameter <code>exclude</code> of site configuration, defined in <a href="#3-1-config-yml">config.yml</a>.
-            <br>If parameter <code>file</code> is specified, this parameter is ignored.
+            CSS class of the div containing the generated toc.
         </td>
-        <td>Optional</td>
-        <td><code>[]</code></td>
+    </tr>
+    <tr>
+        <td><code>toc-tab-length</code></td>
+        <td>int</td>
+        <td><code>4</code></td>
+        <td>
+            Number of white spaces used to indent the pagetoc list.
+        </td>
     </tr>
 </table>
 
