@@ -46,6 +46,10 @@ class pagetoc implements Command {
     /** Shortcut for tab used when generating toc **/
     private static string $toctab = '';
     
+    private static bool $isTocEmpty;
+    
+    
+    
     /** 
         @param  $params Associative array that MUST contain the following keys :
             - 'site' (required) :
@@ -136,6 +140,7 @@ class pagetoc implements Command {
                 continue;
             }
             // HERE MAIN CALL - computes self::$toc and self::$text
+            self::$isTocEmpty = true;
             self::compute(
                 level: 0,
                 text: file_get_contents($file),
@@ -145,6 +150,9 @@ class pagetoc implements Command {
             //
             // generate output
             //
+            if(self::$isTocEmpty){
+                continue;
+            }
             if(self::$params['command']['action'] == 'print-toc'){
                 echo self::$toc . "\n";
                 continue;
@@ -230,6 +238,7 @@ class pagetoc implements Command {
         $p2 = '/\s*<' . $curTag . '(?<tag_attributes>.*?)>(?<tag_contents>.*?)<\/' . $curTag . '>(?<end>.*?)(?=<' . $curTag . '|\z)/si';
         preg_match_all($p2, $m1['end'], $m2);
         if(count($m2[0]) > 0) {
+            self::$isTocEmpty = false;
             $tabs1 = str_repeat(self::$toctab, 2*$level + 1);
             $tabs2 = str_repeat(self::$toctab, 2*$level + 2);
             $tabs3 = str_repeat(self::$toctab, 2*$level + 3);
