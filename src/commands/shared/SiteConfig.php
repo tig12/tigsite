@@ -20,7 +20,7 @@ class SiteConfig {
         @return     An array containing the configuration with default values filled
         @throws     Exception if a required directive is missing or invalid.
     **/
-    public static function compute($config){
+    public static function compute(array $config): array{
         if(!isset($config['site-root'])){
             throw new \Exception("Missing \$config['site']['site-root']");
         }

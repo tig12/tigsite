@@ -18,9 +18,9 @@ require_once $ROOT_DIR . DS . 'src' . DS . 'app' . DS . 'autoload.php';
 
 $USAGE = <<<USAGE
 Usage : 
-    php {$argv[0]} <site> <action>
+    php {$argv[0]} <site> <command>
     <site> : must be a sub-directory of config/ 
-    <action> : must correspond to a yaml file of config/<site>/commands/ 
+    <command> : must correspond to a yaml file of config/<site>/commands/ 
 Example :
     # Updates the footer of all site pages
     # Uses the command file config/tig12.net/commands/replace-footer.yml
