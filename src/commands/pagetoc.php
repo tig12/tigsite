@@ -133,7 +133,7 @@ class pagetoc implements Command {
             }
             self::$toc = '';
             self::$text = '';
-            self::$toc .= "\n" . '<nav class="' . self::$params['command']['toc-css-class'] . '">' . "\n";
+            self::$toc .= "\n" . '<nav class="' . self::$params['command']['toc-css-class'] . '" aria-label="Table of contents">' . "\n";
             $text = @file_get_contents($file);
             if($text === false){
                 echo "ERROR: impossible to read file $file\n";
@@ -164,12 +164,12 @@ class pagetoc implements Command {
                       '#('
                     . self::$params['command']['insert-after']
                     . '\s*'
-                    . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
+                    . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '".*?>.*?</nav>)?'
                     . ')#s';
             } else {
                 $pattern =
                       '#('
-                    . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '">.*?</nav>)?'
+                    . '(?:<nav class="' . self::$params['command']['toc-css-class'] . '".*?>.*?</nav>)?'
                     . '\s*'
                     . self::$params['command']['insert-before']
                     . ')#s';

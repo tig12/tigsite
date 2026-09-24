@@ -24,8 +24,6 @@ class prevnext implements Command {
     const DEFAULT_PARAMS = [
     ];
     
-//    const POSSIBLE_ACTIONS = ['save', 'print-toc', 'print-full', 'list-files'];
-    
     /** Cleaned version of parameter $params passed to execute() **/
     public static array $params = [];
         
@@ -37,6 +35,7 @@ class prevnext implements Command {
                 See format in docs/
             - 'command' (required) :
                 Associative array with the following keys :
+                    TODO
             @throws \Exception in case of bad parameter
     **/
     public static function execute($params=[]){
