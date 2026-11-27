@@ -6,6 +6,8 @@ config/*
 # and also exclude some commands
 config/example/commands/one-shot/insert-vince.yml
 
+# local script to deploy
+push-prod
 
 # files marked for deletion
 z.*
